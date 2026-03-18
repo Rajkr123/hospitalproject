@@ -1,79 +1,194 @@
-function loadAppointments(){
+// ================================
+// DOCTOR DASHBOARD SYSTEM
+// ================================
 
-let token = localStorage.getItem("token")
+document.addEventListener("DOMContentLoaded", () => {
 
-fetch("http://localhost:8083/api/appointments/doctor/2",{
+    loadDoctorDashboard();
+    loadTodayAppointments();
+    loadNotifications();
 
-headers:{
-"Authorization":"Bearer "+token
-}
+});
 
-})
-.then(res=>res.json())
-.then(data=>{
 
-let html=""
+// ================================
+// LOAD DASHBOARD STATS
+// ================================
 
-data.forEach(app=>{
+async function loadDoctorDashboard() {
 
-html+=`
-<div>
+    try {
 
-<p>Patient ID: ${app.patientId}</p>
-<p>Status: ${app.status}</p>
+        const res = await fetch("/api/doctor/dashboard");
+        const data = await res.json();
 
-<button onclick="approve(${app.id})">Approve</button>
-<button onclick="reject(${app.id})">Reject</button>
+        document.getElementById("todayAppointments").innerText = data.todayAppointments;
+        document.getElementById("totalPatients").innerText = data.totalPatients;
+        document.getElementById("pendingReview").innerText = data.pendingReview;
+        document.getElementById("patientRating").innerText = data.rating;
 
-</div>
-`
+    } catch (error) {
 
-})
+        console.error("Dashboard error:", error);
 
-document.getElementById("appointments").innerHTML=html
-
-})
-
-}
-function approve(id){
-
-let token = localStorage.getItem("token")
-
-fetch(`http://localhost:8083/api/appointments/${id}/approve`,{
-
-method:"PUT",
-
-headers:{
-"Authorization":"Bearer "+token
-}
-
-})
-.then(()=>{
-
-alert("Appointment Approved")
-loadAppointments()
-
-})
+    }
 
 }
-function reject(id){
 
-let token = localStorage.getItem("token")
 
-fetch(`http://localhost:8083/api/appointments/${id}/reject`,{
+// ================================
+// LOAD TODAY APPOINTMENTS
+// ================================
 
-method:"PUT",
+async function loadTodayAppointments() {
 
-headers:{
-"Authorization":"Bearer "+token
+    try {
+
+        const res = await fetch("/api/doctor/today-appointments");
+        const appointments = await res.json();
+
+        const table = document.getElementById("appointmentTable");
+
+        table.innerHTML = "";
+
+        appointments.forEach(app => {
+
+            table.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${app.patientName}
+                    <br>
+                    <small>Patient ID: ${app.patientId}</small>
+                </td>
+
+                <td>${app.time}</td>
+
+                <td>${app.reason}</td>
+
+                <td>
+                    <span class="status ${app.status}">
+                        ${app.status}
+                    </span>
+                </td>
+
+                <td>
+
+                    <button onclick="approveAppointment(${app.id})"
+                        class="approve-btn">
+                        Approve
+                    </button>
+
+                    <button onclick="rejectAppointment(${app.id})"
+                        class="reject-btn">
+                        Reject
+                    </button>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        });
+
+    } catch (error) {
+
+        console.error("Appointments error:", error);
+
+    }
+
 }
 
-})
-.then(()=>{
 
-alert("Appointment Rejected")
-loadAppointments()
 
-})
+// ================================
+// APPROVE APPOINTMENT
+// ================================
+
+async function approveAppointment(id) {
+
+    await fetch(`/api/doctor/appointment/${id}/approve`, {
+
+        method: "PUT"
+
+    });
+
+    loadTodayAppointments();
+    loadDoctorDashboard();
 
 }
+
+
+
+// ================================
+// REJECT APPOINTMENT
+// ================================
+
+async function rejectAppointment(id) {
+
+    await fetch(`/api/doctor/appointment/${id}/reject`, {
+
+        method: "PUT"
+
+    });
+
+    loadTodayAppointments();
+    loadDoctorDashboard();
+
+}
+
+
+
+// ================================
+// REFRESH DASHBOARD
+// ================================
+
+function refreshDashboard() {
+
+    loadDoctorDashboard();
+    loadTodayAppointments();
+    loadNotifications();
+
+}
+
+
+
+// ================================
+// LOAD NOTIFICATIONS
+// ================================
+
+async function loadNotifications() {
+
+    try {
+
+        const res = await fetch("/api/doctor/notifications");
+        const notifications = await res.json();
+
+        const bell = document.getElementById("notificationCount");
+
+        if (bell) {
+            bell.innerText = notifications.length;
+        }
+
+    } catch (error) {
+
+        console.log("Notification error");
+
+    }
+
+}
+
+
+
+// ================================
+// AUTO REFRESH EVERY 30s
+// ================================
+
+setInterval(() => {
+
+    loadDoctorDashboard();
+    loadTodayAppointments();
+
+}, 30000);
