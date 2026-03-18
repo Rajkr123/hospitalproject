@@ -4,99 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | SmartHealth</title>
-    <meta name="description" content="Create your SmartHealth account to book appointments and access AI-powered healthcare.">
+    <meta name="description" content="Create a SmartHealth account to book appointments and access your digital healthcare workspace.">
     <link rel="stylesheet" href="../css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-<div class="auth-container" style="min-height: 700px;">
-
-    <!-- Image Panel -->
+<div class="auth-container">
     <div class="auth-image-panel" style="background: linear-gradient(160deg, #0f172a 0%, #0c4a6e 60%, #0a3d4d 100%), url('../images/modern_hospital_hero.png') center/cover;">
         <div class="panel-content">
             <div class="panel-badge"><i class="fas fa-star"></i> Join SmartHealth</div>
-            <h2>Start Your Health Journey Today</h2>
-            <p>Create an account to easily book appointments, access your medical history, and connect with top doctors — anytime, anywhere.</p>
+            <h2>Create your digital care account</h2>
+            <p>Set up patient or doctor access in a few steps and start using the redesigned SmartHealth experience.</p>
             <div class="panel-features">
-                <div class="panel-feature"><i class="fas fa-check-circle"></i> Free account — no hidden charges</div>
-                <div class="panel-feature"><i class="fas fa-check-circle"></i> Instant appointment booking</div>
-                <div class="panel-feature"><i class="fas fa-check-circle"></i> AI-powered health insights</div>
-                <div class="panel-feature"><i class="fas fa-check-circle"></i> Secure, encrypted records</div>
+                <div class="panel-feature"><i class="fas fa-check-circle"></i> Faster appointment access</div>
+                <div class="panel-feature"><i class="fas fa-check-circle"></i> Cleaner dashboards for every role</div>
+                <div class="panel-feature"><i class="fas fa-check-circle"></i> AI-assisted symptom guidance built in</div>
             </div>
         </div>
     </div>
 
-    <!-- Form Panel -->
     <div class="auth-form-panel">
         <div class="logo">
             <img src="../images/modern_hospital_logo.png" alt="SmartHealth Logo">
             <h2>SmartHealth</h2>
         </div>
 
-        <h3>Create an Account</h3>
-        <p class="sub-text">Fill in the details below to get started for free.</p>
+        <div class="auth-kicker"><i class="fas fa-user-plus"></i> Register</div>
+        <h3>Open your SmartHealth account</h3>
+        <p class="sub-text">Fill in your details below and choose the role you want to use inside the application.</p>
 
         <form id="registerForm" onsubmit="handleRegister(event)">
+            <div class="form-grid">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="name">Full Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="name" placeholder="John Doe" required autocomplete="name">
+                        </div>
+                    </div>
 
-            <div class="input-group">
-                <label>Full Name</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="name" placeholder="John Doe" required autocomplete="name">
+                    <div class="input-group">
+                        <label for="role">Register As</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-id-badge"></i>
+                            <select id="role" required>
+                                <option value="" disabled selected>Select your role</option>
+                                <option value="patient">Patient</option>
+                                <option value="doctor">Doctor</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="input-group">
-                <label>Email Address</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="email" placeholder="john.doe@example.com" required autocomplete="email">
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="john.doe@example.com" required autocomplete="email">
+                    </div>
                 </div>
-            </div>
 
-            <div class="input-group">
-                <label>Password</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="Create a strong password" required autocomplete="new-password">
-                    <span class="toggle-password" onclick="togglePw(this)"><i class="fas fa-eye"></i></span>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label>Register As</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-id-badge"></i>
-                    <select id="role" required style="padding-left: 42px;">
-                        <option value="" disabled selected>Select your role</option>
-                        <option value="patient">Patient</option>
-                        <option value="doctor">Doctor</option>
-                    </select>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Create a strong password" required autocomplete="new-password">
+                        <span class="toggle-password" onclick="togglePw(this)"><i class="fas fa-eye"></i></span>
+                    </div>
                 </div>
             </div>
 
             <button type="submit" class="btn-submit" id="regBtn">
                 <i class="fas fa-user-plus"></i> Create Account
             </button>
-
         </form>
 
+        <div class="helper-panel">
+            <h4>What happens next?</h4>
+            <p>After registration, the current frontend keeps the existing role-based redirect behavior and sends the same registration payload to your backend.</p>
+        </div>
+
         <div class="switch-auth">
-            <p>Already have an account? <a href="login.html">Sign In</a></p>
-            <p style="margin-top: 12px;"><a href="../index.html"><i class="fas fa-arrow-left"></i> Back to Home</a></p>
+            <p>Already have an account? <a href="login.html">Sign in</a></p>
+            <p><a href="../index.html"><i class="fas fa-arrow-left"></i> Back to home</a></p>
         </div>
     </div>
-
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
     function togglePw(el) {
         const input = el.closest('.input-wrapper').querySelector('input');
-        const icon  = el.querySelector('i');
+        const icon = el.querySelector('i');
         if (input.type === 'password') {
             input.type = 'text';
             icon.className = 'fas fa-eye-slash';
@@ -119,10 +121,10 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
         btn.disabled = true;
 
-        const name     = document.getElementById('name').value.trim();
-        const email    = document.getElementById('email').value.trim();
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
-        const role     = document.getElementById('role').value;
+        const role = document.getElementById('role').value;
 
         fetch('http://localhost:8083/api/users/register', {
             method: 'POST',
@@ -134,7 +136,7 @@
             return res.text();
         })
         .then(() => {
-            showToast('Account created! Redirecting...', 'success');
+            showToast('Account created. Redirecting...', 'success');
             setTimeout(() => {
                 window.location.href = role === 'doctor' ? 'doctor-dashboard.html' : 'patient-dashboard.html';
             }, 1200);

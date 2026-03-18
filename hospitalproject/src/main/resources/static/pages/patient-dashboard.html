@@ -10,8 +10,6 @@
 <body>
 
 <div class="layout">
-
-    <!-- Sidebar -->
     <div class="sidebar">
         <a href="../index.html" class="brand">
             <img src="../images/modern_hospital_logo.png" alt="Logo">
@@ -19,28 +17,13 @@
         </a>
 
         <nav class="nav-menu">
-            <span class="nav-label">Menu</span>
-            <a href="patient-dashboard.html" class="nav-link active">
-                <i class="fas fa-home"></i> <span>Dashboard</span>
-            </a>
-            <a href="appointment.html" class="nav-link">
-                <i class="fas fa-calendar-plus"></i> <span>Book Appointment</span>
-            </a>
-            <a href="appointment-history.html" class="nav-link">
-                <i class="fas fa-history"></i> <span>My History</span>
-            </a>
-            <a href="ai-checker.html" class="nav-link">
-                <i class="fas fa-robot"></i> <span>AI Symptom Checker</span>
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-file-invoice-dollar"></i> <span>Billing</span>
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-user-circle"></i> <span>My Profile</span>
-            </a>
-            <a href="../index.html" class="nav-link logout-bg">
-                <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
-            </a>
+            <span class="nav-label">Patient Menu</span>
+            <a href="patient-dashboard.html" class="nav-link active"><i class="fas fa-house"></i><span>Dashboard</span></a>
+            <a href="appointment.html" class="nav-link"><i class="fas fa-calendar-plus"></i><span>Book Appointment</span></a>
+            <a href="appointment-history.html" class="nav-link"><i class="fas fa-clock-rotate-left"></i><span>My History</span></a>
+            <a href="ai-checker.html" class="nav-link"><i class="fas fa-robot"></i><span>AI Symptom Checker</span></a>
+            <a href="appointment-calendra.html" class="nav-link"><i class="fas fa-calendar-days"></i><span>Schedule View</span></a>
+            <a href="../index.html" class="nav-link logout-bg"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
         </nav>
 
         <div class="sidebar-user">
@@ -52,10 +35,7 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="main">
-
-        <!-- Topbar -->
         <div class="topbar">
             <h2>Patient Overview</h2>
             <div class="topbar-right">
@@ -71,129 +51,164 @@
         </div>
 
         <div class="content">
-
-            <div class="page-header">
-                <h1>Good day, John 👋</h1>
-                <p>Here's a quick overview of your health activity — <span id="today-date"></span></p>
+            <div class="hero-panel">
+                <div class="eyebrow"><i class="fas fa-heart-pulse"></i> Personal care hub</div>
+                <h1>Good day, John</h1>
+                <p>Track upcoming consultations, keep an eye on health indicators, and move quickly from symptom checking to booking care. Today is <span id="today-date"></span>.</p>
+                <div class="hero-meta">
+                    <div class="hero-stat">
+                        <strong>2</strong>
+                        <span>Upcoming consultations</span>
+                    </div>
+                    <div class="hero-stat">
+                        <strong>1</strong>
+                        <span>Prescription awaiting follow-up</span>
+                    </div>
+                    <div class="hero-stat">
+                        <strong>98%</strong>
+                        <span>Profile and records up to date</span>
+                    </div>
+                </div>
             </div>
 
-            <!-- Health Stats -->
             <div class="health-stats">
                 <div class="health-stat-card">
-                    <div class="health-icon" style="background:rgba(239,68,68,0.1);color:#ef4444;">
+                    <div class="health-icon" style="background:rgba(239,68,68,0.12);color:#ef4444;">
                         <i class="fas fa-heartbeat"></i>
                     </div>
                     <div class="stat-info">
                         <div class="stat-val">72 bpm</div>
-                        <div class="stat-label">Heart Rate</div>
+                        <div class="stat-label">Heart rate</div>
                     </div>
                 </div>
                 <div class="health-stat-card">
-                    <div class="health-icon" style="background:rgba(14,165,233,0.1);color:#0ea5e9;">
-                        <i class="fas fa-tint"></i>
+                    <div class="health-icon" style="background:rgba(19,148,235,0.12);color:#1394eb;">
+                        <i class="fas fa-droplet"></i>
                     </div>
                     <div class="stat-info">
                         <div class="stat-val">120/80</div>
-                        <div class="stat-label">Blood Pressure</div>
+                        <div class="stat-label">Blood pressure</div>
                     </div>
                 </div>
                 <div class="health-stat-card">
-                    <div class="health-icon" style="background:rgba(16,185,129,0.1);color:#10b981;">
-                        <i class="fas fa-weight"></i>
+                    <div class="health-icon" style="background:rgba(24,184,137,0.12);color:#18b889;">
+                        <i class="fas fa-weight-scale"></i>
                     </div>
                     <div class="stat-info">
                         <div class="stat-val">70 kg</div>
-                        <div class="stat-label">Body Weight</div>
+                        <div class="stat-label">Body weight</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Quick Action Cards -->
-            <div class="cards">
-                <a href="appointment.html" class="card">
-                    <div class="card-icon" style="background:rgba(14,165,233,0.1);color:#0ea5e9;">
-                        <i class="fas fa-calendar-plus"></i>
-                    </div>
-                    <h3>Book Appointment</h3>
-                    <p>Schedule a new consultation with top specialists.</p>
-                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
-                </a>
+            <div class="dashboard-grid">
+                <div class="stack">
+                    <div class="cards">
+                        <a href="appointment.html" class="card">
+                            <div class="card-icon" style="background:rgba(19,148,235,0.12);color:#1394eb;">
+                                <i class="fas fa-calendar-plus"></i>
+                            </div>
+                            <h3>Book Appointment</h3>
+                            <div class="card-value">New Visit</div>
+                            <p>Schedule a consultation with the right specialist in a few guided steps.</p>
+                            <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                        </a>
 
-                <a href="appointment-history.html" class="card">
-                    <div class="card-icon" style="background:rgba(16,185,129,0.1);color:#10b981;">
-                        <i class="fas fa-history"></i>
-                    </div>
-                    <h3>Medical History</h3>
-                    <p>View past appointments, prescriptions, and reports.</p>
-                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
-                </a>
+                        <a href="appointment-history.html" class="card">
+                            <div class="card-icon" style="background:rgba(24,184,137,0.12);color:#18b889;">
+                                <i class="fas fa-file-waveform"></i>
+                            </div>
+                            <h3>Medical History</h3>
+                            <div class="card-value">5 Visits</div>
+                            <p>Review completed consultations, reports, and future appointments.</p>
+                            <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                        </a>
 
-                <a href="ai-checker.html" class="card">
-                    <div class="card-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6;">
-                        <i class="fas fa-robot"></i>
+                        <a href="ai-checker.html" class="card">
+                            <div class="card-icon" style="background:rgba(124,92,255,0.12);color:#7c5cff;">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h3>AI Symptom Checker</h3>
+                            <div class="card-value">Fast Triage</div>
+                            <p>Describe symptoms and get a quick guidance summary before booking care.</p>
+                            <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                        </a>
                     </div>
-                    <h3>AI Symptom Checker</h3>
-                    <p>Analyze your symptoms instantly using AI models.</p>
-                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
-                </a>
 
-                <a href="#" class="card">
-                    <div class="card-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b;">
-                        <i class="fas fa-file-invoice-dollar"></i>
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <h3>Upcoming Appointments</h3>
+                            <a href="appointment-history.html" class="see-all">See all</a>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Doctor</th>
+                                        <th>Specialty</th>
+                                        <th>Date &amp; Time</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="td-name">Dr. Sarah Smith</span>
+                                            <div class="td-sub">MBBS, MD</div>
+                                        </td>
+                                        <td>Cardiology</td>
+                                        <td>Mar 24, 2026 - 10:00 AM</td>
+                                        <td><span class="badge badge-green"><i class="fas fa-circle" style="font-size:6px;"></i> Confirmed</span></td>
+                                        <td><a href="#" class="action-btn primary">Details</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="td-name">Dr. Mike Johnson</span>
+                                            <div class="td-sub">MBBS, DM</div>
+                                        </td>
+                                        <td>General Medicine</td>
+                                        <td>Apr 02, 2026 - 02:30 PM</td>
+                                        <td><span class="badge badge-yellow"><i class="fas fa-circle" style="font-size:6px;"></i> Pending</span></td>
+                                        <td><a href="#" class="action-btn primary">Details</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <h3>Billing &amp; Payments</h3>
-                    <p>Manage invoices and make secure payments online.</p>
-                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
-                </a>
-            </div>
-
-            <!-- Upcoming Appointments -->
-            <div class="table-card">
-                <div class="table-card-header">
-                    <h3>Upcoming Appointments</h3>
-                    <a href="appointment-history.html" class="see-all">See all</a>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Doctor</th>
-                            <th>Specialty</th>
-                            <th>Date &amp; Time</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <span class="td-name">Dr. Sarah Smith</span>
-                                <div class="td-sub">MBBS, MD</div>
-                            </td>
-                            <td>Cardiology</td>
-                            <td>Mar 24, 2026 – 10:00 AM</td>
-                            <td><span class="badge badge-green"><i class="fas fa-circle" style="font-size:6px;"></i> Confirmed</span></td>
-                            <td><a href="#" class="action-btn primary">Details</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="td-name">Dr. Mike Johnson</span>
-                                <div class="td-sub">MBBS, DM</div>
-                            </td>
-                            <td>General Medicine</td>
-                            <td>Apr 02, 2026 – 02:30 PM</td>
-                            <td><span class="badge badge-yellow"><i class="fas fa-circle" style="font-size:6px;"></i> Pending</span></td>
-                            <td><a href="#" class="action-btn primary">Details</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
 
+                <div class="stack">
+                    <div class="info-card">
+                        <h3>Next best actions</h3>
+                        <div class="bullet-list">
+                            <div class="bullet-item"><i class="fas fa-check-circle"></i><span>Confirm your cardiology follow-up scheduled for March 24.</span></div>
+                            <div class="bullet-item"><i class="fas fa-check-circle"></i><span>Upload any recent reports before your next consultation.</span></div>
+                            <div class="bullet-item"><i class="fas fa-check-circle"></i><span>Use the AI checker if new symptoms appear before the visit.</span></div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Care summary</h3>
+                        <div class="bullet-list">
+                            <div class="bullet-item"><i class="fas fa-user-doctor"></i><span>Primary specialist: Dr. Sarah Smith</span></div>
+                            <div class="bullet-item"><i class="fas fa-notes-medical"></i><span>Last completed visit: Feb 10, 2026</span></div>
+                            <div class="bullet-item"><i class="fas fa-file-prescription"></i><span>Outstanding item: medication review</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-IN', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
 </script>
 
 </body>

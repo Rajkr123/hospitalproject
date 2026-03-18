@@ -10,8 +10,6 @@
 <body>
 
 <div class="layout">
-
-    <!-- Sidebar -->
     <div class="sidebar">
         <a href="../index.html" class="brand">
             <img src="../images/modern_hospital_logo.png" alt="Logo">
@@ -19,34 +17,19 @@
         </a>
 
         <nav class="nav-menu">
-            <span class="nav-label">Main</span>
-            <a href="admin-dashboard.html" class="nav-link active" id="nav-overview">
-                <i class="fas fa-chart-pie"></i> <span>Overview</span>
-            </a>
-            <a href="#" class="nav-link" id="nav-doctors">
-                <i class="fas fa-user-md"></i> <span>Manage Doctors</span>
-            </a>
-            <a href="#" class="nav-link" id="nav-patients">
-                <i class="fas fa-procedures"></i> <span>Manage Patients</span>
-            </a>
-            <a href="#" class="nav-link" id="nav-appointments">
-                <i class="fas fa-calendar-check"></i> <span>Appointments</span>
-            </a>
-
+            <span class="nav-label">Overview</span>
+            <a href="admin-dashboard.html" class="nav-link active" id="nav-overview"><i class="fas fa-chart-pie"></i><span>Overview</span></a>
+            <a href="#" class="nav-link" id="nav-doctors"><i class="fas fa-user-md"></i><span>Manage Doctors</span></a>
+            <a href="#" class="nav-link" id="nav-patients"><i class="fas fa-procedures"></i><span>Manage Patients</span></a>
+            <a href="#" class="nav-link" id="nav-appointments"><i class="fas fa-calendar-check"></i><span>Appointments</span></a>
             <span class="nav-label">System</span>
-            <a href="#" class="nav-link">
-                <i class="fas fa-chart-line"></i> <span>Analytics</span>
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-cog"></i> <span>Settings</span>
-            </a>
-            <a href="../index.html" class="nav-link logout-bg">
-                <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
-            </a>
+            <a href="#" class="nav-link"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+            <a href="#" class="nav-link"><i class="fas fa-gear"></i><span>Settings</span></a>
+            <a href="../index.html" class="nav-link logout-bg"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
         </nav>
 
         <div class="sidebar-user">
-            <div class="user-avatar"><i class="fas fa-user-shield"></i></div>
+            <div class="user-avatar" style="background:linear-gradient(135deg,#ef4444,#b91c1c);"><i class="fas fa-user-shield"></i></div>
             <div class="user-info">
                 <span class="name">Admin User</span>
                 <span class="role-tag">Administrator</span>
@@ -54,10 +37,7 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="main">
-
-        <!-- Topbar -->
         <div class="topbar">
             <h2>Admin Control Panel</h2>
             <div class="topbar-right">
@@ -67,130 +47,159 @@
                         <span class="name">Admin User</span>
                         <span class="role">Administrator</span>
                     </div>
-                    <div class="user-avatar" style="background: linear-gradient(135deg,#ef4444,#b91c1c);">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
+                    <div class="user-avatar" style="background:linear-gradient(135deg,#ef4444,#b91c1c);"><i class="fas fa-user-shield"></i></div>
                 </div>
             </div>
         </div>
 
-        <!-- Content -->
         <div class="content">
-
-            <div class="page-header">
-                <h1>Welcome back, Admin 👋</h1>
-                <p>Here's what's happening at SmartHealth today — <span id="today-date"></span></p>
-            </div>
-
-            <!-- Stat Cards -->
-            <div class="cards">
-                <div class="card">
-                    <div class="card-icon" style="background:rgba(14,165,233,0.1);color:#0ea5e9;">
-                        <i class="fas fa-user-md"></i>
+            <div class="hero-panel compact">
+                <div class="eyebrow"><i class="fas fa-shield-halved"></i> Platform pulse</div>
+                <h1>Welcome back, Admin</h1>
+                <p>Monitor doctors, patients, appointments, and revenue from one cleaner control surface. Snapshot updated for <span id="today-date"></span>.</p>
+                <div class="hero-meta">
+                    <div class="hero-stat">
+                        <strong>42</strong>
+                        <span>Active specialists</span>
                     </div>
-                    <h3>Total Doctors</h3>
-                    <div class="card-value">42</div>
-                    <p>Active specialists</p>
-                    <span class="trend up"><i class="fas fa-arrow-up"></i> +3 this month</span>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon" style="background:rgba(16,185,129,0.1);color:#10b981;">
-                        <i class="fas fa-users"></i>
+                    <div class="hero-stat">
+                        <strong>1,280</strong>
+                        <span>Registered patients</span>
                     </div>
-                    <h3>Registered Patients</h3>
-                    <div class="card-value">1,280</div>
-                    <p>Total platform users</p>
-                    <span class="trend up"><i class="fas fa-arrow-up"></i> +48 this week</span>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b;">
-                        <i class="fas fa-calendar-check"></i>
+                    <div class="hero-stat">
+                        <strong>Rs 4.5L</strong>
+                        <span>Monthly revenue tracked</span>
                     </div>
-                    <h3>Appointments</h3>
-                    <div class="card-value">3,560</div>
-                    <p>Completed &amp; Pending</p>
-                    <span class="trend up"><i class="fas fa-arrow-up"></i> +120 today</span>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6;">
-                        <i class="fas fa-rupee-sign"></i>
-                    </div>
-                    <h3>Revenue</h3>
-                    <div class="card-value">₹4.5L</div>
-                    <p>Generated this month</p>
-                    <span class="trend up"><i class="fas fa-arrow-up"></i> +12% vs last month</span>
                 </div>
             </div>
 
-            <!-- Recent Appointments Table -->
-            <div class="table-card">
-                <div class="table-card-header">
-                    <h3>Recent Appointments</h3>
-                    <div style="display:flex;gap:12px;align-items:center;">
-                        <div class="search-bar">
-                            <i class="fas fa-search"></i>
-                            <input type="text" placeholder="Search..." oninput="filterTable(this.value)">
+            <div class="dashboard-grid">
+                <div class="stack">
+                    <div class="cards">
+                        <div class="card">
+                            <div class="card-icon" style="background:rgba(19,148,235,0.12);color:#1394eb;">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <h3>Total Doctors</h3>
+                            <div class="card-value">42</div>
+                            <p>Verified and active specialists on the platform.</p>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i> +3 this month</span>
                         </div>
-                        <a href="#" class="see-all">See all</a>
+
+                        <div class="card">
+                            <div class="card-icon" style="background:rgba(24,184,137,0.12);color:#18b889;">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Registered Patients</h3>
+                            <div class="card-value">1,280</div>
+                            <p>Total users currently using SmartHealth.</p>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i> +48 this week</span>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-icon" style="background:rgba(245,158,11,0.16);color:#f59e0b;">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <h3>Appointments</h3>
+                            <div class="card-value">3,560</div>
+                            <p>Completed, confirmed, and pending visits.</p>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i> +120 today</span>
+                        </div>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <h3>Recent Appointments</h3>
+                            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                                <div class="search-bar">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Search appointments..." oninput="filterTable(this.value)">
+                                </div>
+                                <a href="#" class="see-all">See all</a>
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <table id="adminTable">
+                                <thead>
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Doctor</th>
+                                        <th>Specialty</th>
+                                        <th>Date &amp; Time</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="td-name">Rahul Sharma</span></td>
+                                        <td>Dr. Sarah Smith</td>
+                                        <td>Cardiology</td>
+                                        <td>Mar 16, 2026 - 10:00 AM</td>
+                                        <td><span class="badge badge-green"><i class="fas fa-circle" style="font-size:6px;"></i> Confirmed</span></td>
+                                        <td><a href="#" class="action-btn primary">View</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="td-name">Priya Patel</span></td>
+                                        <td>Dr. Mike Johnson</td>
+                                        <td>General Medicine</td>
+                                        <td>Mar 17, 2026 - 02:30 PM</td>
+                                        <td><span class="badge badge-yellow"><i class="fas fa-circle" style="font-size:6px;"></i> Pending</span></td>
+                                        <td><a href="#" class="action-btn primary">View</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="td-name">Amit Kumar</span></td>
+                                        <td>Dr. Anita Rao</td>
+                                        <td>Neurology</td>
+                                        <td>Mar 18, 2026 - 11:00 AM</td>
+                                        <td><span class="badge badge-blue"><i class="fas fa-circle" style="font-size:6px;"></i> Scheduled</span></td>
+                                        <td><a href="#" class="action-btn primary">View</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="td-name">Sneha Joshi</span></td>
+                                        <td>Dr. Raj Mehta</td>
+                                        <td>Pediatrics</td>
+                                        <td>Mar 15, 2026 - 09:00 AM</td>
+                                        <td><span class="badge badge-red"><i class="fas fa-circle" style="font-size:6px;"></i> Cancelled</span></td>
+                                        <td><a href="#" class="action-btn primary">View</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <table id="adminTable">
-                    <thead>
-                        <tr>
-                            <th>Patient</th>
-                            <th>Doctor</th>
-                            <th>Specialty</th>
-                            <th>Date &amp; Time</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="td-name">Rahul Sharma</span></td>
-                            <td>Dr. Sarah Smith</td>
-                            <td>Cardiology</td>
-                            <td>Mar 16, 2026 – 10:00 AM</td>
-                            <td><span class="badge badge-green"><i class="fas fa-circle" style="font-size:6px;"></i> Confirmed</span></td>
-                            <td><a href="#" class="action-btn primary">View</a></td>
-                        </tr>
-                        <tr>
-                            <td><span class="td-name">Priya Patel</span></td>
-                            <td>Dr. Mike Johnson</td>
-                            <td>General Medicine</td>
-                            <td>Mar 17, 2026 – 02:30 PM</td>
-                            <td><span class="badge badge-yellow"><i class="fas fa-circle" style="font-size:6px;"></i> Pending</span></td>
-                            <td><a href="#" class="action-btn primary">View</a></td>
-                        </tr>
-                        <tr>
-                            <td><span class="td-name">Amit Kumar</span></td>
-                            <td>Dr. Anita Rao</td>
-                            <td>Neurology</td>
-                            <td>Mar 18, 2026 – 11:00 AM</td>
-                            <td><span class="badge badge-blue"><i class="fas fa-circle" style="font-size:6px;"></i> Scheduled</span></td>
-                            <td><a href="#" class="action-btn primary">View</a></td>
-                        </tr>
-                        <tr>
-                            <td><span class="td-name">Sneha Joshi</span></td>
-                            <td>Dr. Raj Mehta</td>
-                            <td>Pediatrics</td>
-                            <td>Mar 15, 2026 – 09:00 AM</td>
-                            <td><span class="badge badge-red"><i class="fas fa-circle" style="font-size:6px;"></i> Cancelled</span></td>
-                            <td><a href="#" class="action-btn primary">View</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
 
-        </div><!-- /content -->
-    </div><!-- /main -->
-</div><!-- /layout -->
+                <div class="stack">
+                    <div class="info-card">
+                        <h3>Admin priorities</h3>
+                        <div class="bullet-list">
+                            <div class="bullet-item"><i class="fas fa-circle-check"></i><span>Review pending doctor onboarding requests.</span></div>
+                            <div class="bullet-item"><i class="fas fa-circle-check"></i><span>Audit appointment cancellation trends this week.</span></div>
+                            <div class="bullet-item"><i class="fas fa-circle-check"></i><span>Check notification delivery for patient reminders.</span></div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>System summary</h3>
+                        <div class="bullet-list">
+                            <div class="bullet-item"><i class="fas fa-signal"></i><span>Appointment volume is trending positively.</span></div>
+                            <div class="bullet-item"><i class="fas fa-wallet"></i><span>Revenue is up 12% versus last month.</span></div>
+                            <div class="bullet-item"><i class="fas fa-user-group"></i><span>Patient growth remains healthy week over week.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-    document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-IN', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
 
     function filterTable(q) {
         const rows = document.querySelectorAll('#adminTable tbody tr');

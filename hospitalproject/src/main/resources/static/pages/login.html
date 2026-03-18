@@ -4,54 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | SmartHealth</title>
-    <meta name="description" content="Sign in to your SmartHealth account to manage appointments, view records, and more.">
+    <meta name="description" content="Sign in to your SmartHealth account to manage appointments, records, and hospital workflows.">
     <link rel="stylesheet" href="../css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
 <div class="auth-container">
-
-    <!-- Image Panel -->
     <div class="auth-image-panel" style="background: linear-gradient(160deg, #0f172a 0%, #0c4a6e 50%, #0f172a 100%), url('../images/medical_team_login.png') center/cover;">
         <div class="panel-content">
-            <div class="panel-badge"><i class="fas fa-shield-alt"></i> Secure Login</div>
-            <h2>Welcome Back to SmartHealth</h2>
-            <p>Your trusted digital companion for seamless healthcare management.</p>
+            <div class="panel-badge"><i class="fas fa-shield-heart"></i> Secure Access</div>
+            <h2>Welcome back to your care workspace</h2>
+            <p>Move from sign-in to appointments, patient activity, and records with a cleaner, more focused workflow.</p>
             <div class="panel-features">
-                <div class="panel-feature"><i class="fas fa-check-circle"></i> Access your medical records</div>
-                <div class="panel-feature"><i class="fas fa-check-circle"></i> Manage appointments easily</div>
-                <div class="panel-feature"><i class="fas fa-check-circle"></i> AI-powered symptom analysis</div>
+                <div class="panel-feature"><i class="fas fa-check-circle"></i> Review appointments and records faster</div>
+                <div class="panel-feature"><i class="fas fa-check-circle"></i> Access AI-assisted patient guidance</div>
+                <div class="panel-feature"><i class="fas fa-check-circle"></i> Continue across patient, doctor, and admin flows</div>
             </div>
         </div>
     </div>
 
-    <!-- Form Panel -->
     <div class="auth-form-panel">
         <div class="logo">
             <img src="../images/modern_hospital_logo.png" alt="SmartHealth Logo">
             <h2>SmartHealth</h2>
         </div>
 
-        <h3>Sign in to your account</h3>
-        <p class="sub-text">Enter your credentials to access your dashboard.</p>
+        <div class="auth-kicker"><i class="fas fa-lock"></i> Sign in</div>
+        <h3>Access your account</h3>
+        <p class="sub-text">Enter your credentials to continue into your SmartHealth dashboard.</p>
 
         <form id="loginForm" onsubmit="handleLogin(event)">
-
-            <div class="input-group">
-                <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+            <div class="form-grid">
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+                    </div>
                 </div>
-            </div>
 
-            <div class="input-group">
-                <label for="password"><i class="fas fa-lock"></i> Password</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="Enter your password" required autocomplete="current-password">
-                    <span class="toggle-password" onclick="togglePw(this)"><i class="fas fa-eye"></i></span>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Enter your password" required autocomplete="current-password">
+                        <span class="toggle-password" onclick="togglePw(this)"><i class="fas fa-eye"></i></span>
+                    </div>
                 </div>
             </div>
 
@@ -60,26 +59,28 @@
             </div>
 
             <button type="submit" class="btn-submit" id="loginBtn">
-                <i class="fas fa-sign-in-alt"></i> Sign In
+                <i class="fas fa-right-to-bracket"></i> Sign In
             </button>
-
         </form>
+
+        <div class="helper-panel">
+            <h4>Quick tip</h4>
+            <p>This screen keeps the existing backend login flow intact, so the UI refresh does not change how authentication requests are sent.</p>
+        </div>
 
         <div class="switch-auth">
             <p>Don't have an account? <a href="register.html">Create one</a></p>
-            <p style="margin-top: 12px;"><a href="../index.html"><i class="fas fa-arrow-left"></i> Back to Home</a></p>
+            <p><a href="../index.html"><i class="fas fa-arrow-left"></i> Back to home</a></p>
         </div>
     </div>
-
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
     function togglePw(el) {
         const input = el.closest('.input-wrapper').querySelector('input');
-        const icon  = el.querySelector('i');
+        const icon = el.querySelector('i');
         if (input.type === 'password') {
             input.type = 'text';
             icon.className = 'fas fa-eye-slash';
@@ -102,7 +103,7 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
         btn.disabled = true;
 
-        const email    = document.getElementById('email').value;
+        const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
         fetch('http://localhost:8083/api/users/login', {
@@ -116,12 +117,12 @@
         })
         .then(token => {
             localStorage.setItem('token', token);
-            showToast('Login successful! Redirecting...', 'success');
+            showToast('Login successful. Redirecting...', 'success');
             setTimeout(() => window.location.href = 'patient-dashboard.html', 1000);
         })
         .catch(err => {
             showToast(err.message || 'Login failed. Please try again.', 'error');
-            btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+            btn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Sign In';
             btn.disabled = false;
         });
     }
