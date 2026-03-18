@@ -26,10 +26,10 @@
         </nav>
 
         <div class="sidebar-user">
-            <div class="user-avatar">JD</div>
+            <div class="user-avatar" data-user-initials>JD</div>
             <div class="user-info">
-                <span class="name">John Doe</span>
-                <span class="role-tag">Patient</span>
+                <span class="name" data-user-name>John Doe</span>
+                <span class="role-tag" data-user-role>Patient</span>
             </div>
         </div>
     </div>
@@ -40,10 +40,10 @@
             <div class="topbar-right">
                 <div class="user-profile">
                     <div class="user-info">
-                        <span class="name">John Doe</span>
-                        <span class="role">Patient</span>
+                        <span class="name" data-user-name>John Doe</span>
+                        <span class="role" data-user-role>Patient</span>
                     </div>
-                    <div class="user-avatar">JD</div>
+                    <div class="user-avatar" data-user-initials>JD</div>
                 </div>
             </div>
         </div>
@@ -149,9 +149,11 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="../js/session-ui.js"></script>
 <script src="../js/appointment.js"></script>
 <script>
     document.getElementById('appDate').min = new Date().toISOString().split('T')[0];
+    document.getElementById('patientName').value = localStorage.getItem('name') || '';
 
     function showToast(msg, type) {
         const t = document.getElementById('toast');
@@ -167,24 +169,40 @@
         btn.disabled = true;
 
         const token = localStorage.getItem('token');
-        const patientId = 1;
+        const patientId = parseInt(localStorage.getItem('userId'), 10);
         const doctorId = parseInt(document.getElementById('doctor').value, 10);
+        const appDate = document.getElementById('appDate').value;
+        const appTime = document.getElementById('appTime').value;
 
-        fetch('http://localhost:8083/api/appointments', {
+        if (!token || !patientId || !doctorId || !appDate || !appTime) {
+            showToast('Please complete all required fields before booking.', 'error');
+            btn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirm Booking';
+            btn.disabled = false;
+            return;
+        }
+
+        const appointmentTime = appDate + 'T' + appTime + ':00';
+
+        fetch('http://localhost:8083/api/appointments/book', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-            body: JSON.stringify({ patientId, doctorId, status: 'PENDING' })
+            body: JSON.stringify({
+                patientId,
+                doctorId,
+                appointmentTime,
+                status: 'PENDING'
+            })
         })
         .then(res => {
-            if (!res.ok) throw new Error('Booking failed');
+            if (!res.ok) throw new Error('Unable to submit appointment request right now.');
             return res.json();
         })
         .then(() => {
-            showToast('Appointment booked. Awaiting doctor confirmation.', 'success');
+            showToast('Appointment submitted. We will reach you soon as your appointment gets confirmed.', 'success');
             setTimeout(() => window.location.href = 'patient-dashboard.html', 1500);
         })
-        .catch(() => {
-            showToast('Appointment request submitted in demo mode.', 'success');
+        .catch(err => {
+            showToast(err.message || 'Unable to submit appointment request right now.', 'error');
             btn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirm Booking';
             btn.disabled = false;
         });

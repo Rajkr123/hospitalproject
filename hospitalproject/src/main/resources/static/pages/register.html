@@ -15,10 +15,10 @@
         <div class="panel-content">
             <div class="panel-badge"><i class="fas fa-star"></i> Join SmartHealth</div>
             <h2>Create your digital care account</h2>
-            <p>Set up patient or doctor access in a few steps and start using the redesigned SmartHealth experience.</p>
+            <p>Create your patient account in a few steps and start using the redesigned SmartHealth experience.</p>
             <div class="panel-features">
                 <div class="panel-feature"><i class="fas fa-check-circle"></i> Faster appointment access</div>
-                <div class="panel-feature"><i class="fas fa-check-circle"></i> Cleaner dashboards for every role</div>
+                <div class="panel-feature"><i class="fas fa-check-circle"></i> Clean patient dashboard experience</div>
                 <div class="panel-feature"><i class="fas fa-check-circle"></i> AI-assisted symptom guidance built in</div>
             </div>
         </div>
@@ -31,31 +31,23 @@
         </div>
 
         <div class="auth-kicker"><i class="fas fa-user-plus"></i> Register</div>
-        <h3>Open your SmartHealth account</h3>
-        <p class="sub-text">Fill in your details below and choose the role you want to use inside the application.</p>
+        <h3>Open your patient account</h3>
+        <p class="sub-text">Fill in your details below to create your SmartHealth patient account.</p>
 
         <form id="registerForm" onsubmit="handleRegister(event)">
             <div class="form-grid">
-                <div class="input-row">
-                    <div class="input-group">
-                        <label for="name">Full Name</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-user"></i>
-                            <input type="text" id="name" placeholder="John Doe" required autocomplete="name">
-                        </div>
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" placeholder="John Doe" required autocomplete="name">
                     </div>
+                </div>
 
-                    <div class="input-group">
-                        <label for="role">Register As</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-id-badge"></i>
-                            <select id="role" required>
-                                <option value="" disabled selected>Select your role</option>
-                                <option value="patient">Patient</option>
-                                <option value="doctor">Doctor</option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="helper-panel" style="margin-top:0;">
+                    <h4>Account type</h4>
+                    <p>New registrations from this page are created as patient accounts.</p>
+                    <input type="hidden" id="role" value="patient">
                 </div>
 
                 <div class="input-group">
@@ -83,7 +75,7 @@
 
         <div class="helper-panel">
             <h4>What happens next?</h4>
-            <p>After registration, the current frontend keeps the existing role-based redirect behavior and sends the same registration payload to your backend.</p>
+            <p>After registration, you will be redirected into the patient experience and the same backend registration flow will be used.</p>
         </div>
 
         <div class="switch-auth">
@@ -138,7 +130,7 @@
         .then(() => {
             showToast('Account created. Redirecting...', 'success');
             setTimeout(() => {
-                window.location.href = role === 'doctor' ? 'doctor-dashboard.html' : 'patient-dashboard.html';
+                window.location.href = 'patient-dashboard.html';
             }, 1200);
         })
         .catch(err => {

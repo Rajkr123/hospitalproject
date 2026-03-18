@@ -188,6 +188,61 @@ body {
     gap: 18px;
 }
 
+.role-switcher {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.role-option {
+    border: 1px solid rgba(22, 40, 61, 0.1);
+    border-radius: 18px;
+    background: #f7fbfd;
+    padding: 14px 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.role-option strong {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--ink-950);
+    margin-bottom: 4px;
+}
+
+.role-option span {
+    display: block;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--ink-700);
+}
+
+.role-option:hover,
+.role-option.active {
+    background: var(--white);
+    border-color: rgba(19, 148, 235, 0.35);
+    box-shadow: 0 0 0 4px rgba(19, 148, 235, 0.1);
+    transform: translateY(-1px);
+}
+
+.role-option.active strong {
+    color: var(--sky-600);
+}
+
+.role-hint {
+    margin: -6px 0 22px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #f8fbfe, #edf4f8);
+    border: 1px solid var(--paper-200);
+    color: var(--ink-700);
+    line-height: 1.65;
+    font-size: 0.9rem;
+}
+
 .input-row {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -400,6 +455,10 @@ button:hover {
     }
 
     .input-row {
+        grid-template-columns: 1fr;
+    }
+
+    .role-switcher {
         grid-template-columns: 1fr;
     }
 }

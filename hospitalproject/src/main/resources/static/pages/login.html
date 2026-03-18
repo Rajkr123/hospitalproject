@@ -35,6 +35,25 @@
         <p class="sub-text">Enter your credentials to continue into your SmartHealth dashboard.</p>
 
         <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="role-switcher" aria-label="Account type">
+                <button type="button" class="role-option active" data-role="PATIENT" onclick="selectRole('PATIENT', this)">
+                    <strong>Patient</strong>
+                    <span>Appointments and records</span>
+                </button>
+                <button type="button" class="role-option" data-role="DOCTOR" onclick="selectRole('DOCTOR', this)">
+                    <strong>Doctor</strong>
+                    <span>Consultations and queue</span>
+                </button>
+                <button type="button" class="role-option" data-role="ADMIN" onclick="selectRole('ADMIN', this)">
+                    <strong>Admin</strong>
+                    <span>Control panel access</span>
+                </button>
+            </div>
+
+            <div class="role-hint" id="roleHint">
+                Signing in as a patient will open the patient dashboard after authentication.
+            </div>
+
             <div class="form-grid">
                 <div class="input-group">
                     <label for="email">Email Address</label>
@@ -78,6 +97,22 @@
 <div class="toast" id="toast"></div>
 
 <script>
+    let selectedRole = 'PATIENT';
+
+    function selectRole(role, el) {
+        selectedRole = role;
+        document.querySelectorAll('.role-option').forEach(btn => btn.classList.remove('active'));
+        el.classList.add('active');
+
+        const hints = {
+            PATIENT: 'Signing in as a patient will open the patient dashboard after authentication.',
+            DOCTOR: 'Signing in as a doctor will open the doctor dashboard after authentication.',
+            ADMIN: 'Signing in as an admin will open the admin control panel after authentication.'
+        };
+
+        document.getElementById('roleHint').textContent = hints[role];
+    }
+
     function togglePw(el) {
         const input = el.closest('.input-wrapper').querySelector('input');
         const icon = el.querySelector('i');
@@ -113,14 +148,36 @@
         })
         .then(res => {
             if (!res.ok) throw new Error('Invalid credentials');
-            return res.text();
+            return res.json();
         })
-        .then(token => {
-            localStorage.setItem('token', token);
+        .then(data => {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.id);
+            localStorage.setItem('name', data.name);
+            localStorage.setItem('email', data.email);
+            localStorage.setItem('role', data.role);
+
+            if (selectedRole && data.role !== selectedRole) {
+                throw new Error('These credentials are valid, but they belong to a ' + data.role.toLowerCase() + ' account.');
+            }
+
             showToast('Login successful. Redirecting...', 'success');
-            setTimeout(() => window.location.href = 'patient-dashboard.html', 1000);
+            setTimeout(() => {
+                if (data.role === 'ADMIN') {
+                    window.location.href = 'admin-dashboard.html';
+                } else if (data.role === 'DOCTOR') {
+                    window.location.href = 'doctor-dashboard.html';
+                } else {
+                    window.location.href = 'patient-dashboard.html';
+                }
+            }, 1000);
         })
         .catch(err => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('name');
+            localStorage.removeItem('email');
+            localStorage.removeItem('role');
             showToast(err.message || 'Login failed. Please try again.', 'error');
             btn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Sign In';
             btn.disabled = false;

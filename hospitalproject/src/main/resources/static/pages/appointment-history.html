@@ -24,10 +24,10 @@
             <a href="../index.html" class="nav-link logout-bg"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
         </nav>
         <div class="sidebar-user">
-            <div class="user-avatar">JD</div>
+            <div class="user-avatar" data-user-initials>JD</div>
             <div class="user-info">
-                <span class="name">John Doe</span>
-                <span class="role-tag">Patient</span>
+                <span class="name" data-user-name>John Doe</span>
+                <span class="role-tag" data-user-role>Patient</span>
             </div>
         </div>
     </div>
@@ -37,8 +37,8 @@
             <h2>Appointment History</h2>
             <div class="topbar-right">
                 <div class="user-profile">
-                    <div class="user-info"><span class="name">John Doe</span><span class="role">Patient</span></div>
-                    <div class="user-avatar">JD</div>
+                    <div class="user-info"><span class="name" data-user-name>John Doe</span><span class="role" data-user-role>Patient</span></div>
+                    <div class="user-avatar" data-user-initials>JD</div>
                 </div>
             </div>
         </div>
@@ -152,6 +152,7 @@
     </div>
 </div>
 
+<script src="../js/session-ui.js"></script>
 <script src="../js/history.js"></script>
 <script>
     function filterHistory(q) {

@@ -29,10 +29,10 @@
         </nav>
 
         <div class="sidebar-user">
-            <div class="user-avatar" style="background:linear-gradient(135deg,#ef4444,#b91c1c);"><i class="fas fa-user-shield"></i></div>
+            <div class="user-avatar" data-user-initials style="background:linear-gradient(135deg,#ef4444,#b91c1c);">AU</div>
             <div class="user-info">
-                <span class="name">Admin User</span>
-                <span class="role-tag">Administrator</span>
+                <span class="name" data-user-name>Admin User</span>
+                <span class="role-tag" data-user-role>Administrator</span>
             </div>
         </div>
     </div>
@@ -44,10 +44,10 @@
                 <div class="topbar-icon notif-dot"><i class="fas fa-bell"></i></div>
                 <div class="user-profile">
                     <div class="user-info">
-                        <span class="name">Admin User</span>
-                        <span class="role">Administrator</span>
+                        <span class="name" data-user-name>Admin User</span>
+                        <span class="role" data-user-role>Administrator</span>
                     </div>
-                    <div class="user-avatar" style="background:linear-gradient(135deg,#ef4444,#b91c1c);"><i class="fas fa-user-shield"></i></div>
+                    <div class="user-avatar" data-user-initials style="background:linear-gradient(135deg,#ef4444,#b91c1c);">AU</div>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
         <div class="content">
             <div class="hero-panel compact">
                 <div class="eyebrow"><i class="fas fa-shield-halved"></i> Platform pulse</div>
-                <h1>Welcome back, Admin</h1>
+                <h1>Welcome back, <span data-user-first-name>Admin</span></h1>
                 <p>Monitor doctors, patients, appointments, and revenue from one cleaner control surface. Snapshot updated for <span id="today-date"></span>.</p>
                 <div class="hero-meta">
                     <div class="hero-stat">
@@ -124,44 +124,21 @@
                                     <tr>
                                         <th>Patient</th>
                                         <th>Doctor</th>
-                                        <th>Specialty</th>
                                         <th>Date &amp; Time</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="adminAppointmentsBody">
                                     <tr>
                                         <td><span class="td-name">Rahul Sharma</span></td>
                                         <td>Dr. Sarah Smith</td>
-                                        <td>Cardiology</td>
                                         <td>Mar 16, 2026 - 10:00 AM</td>
-                                        <td><span class="badge badge-green"><i class="fas fa-circle" style="font-size:6px;"></i> Confirmed</span></td>
-                                        <td><a href="#" class="action-btn primary">View</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="td-name">Priya Patel</span></td>
-                                        <td>Dr. Mike Johnson</td>
-                                        <td>General Medicine</td>
-                                        <td>Mar 17, 2026 - 02:30 PM</td>
                                         <td><span class="badge badge-yellow"><i class="fas fa-circle" style="font-size:6px;"></i> Pending</span></td>
-                                        <td><a href="#" class="action-btn primary">View</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="td-name">Amit Kumar</span></td>
-                                        <td>Dr. Anita Rao</td>
-                                        <td>Neurology</td>
-                                        <td>Mar 18, 2026 - 11:00 AM</td>
-                                        <td><span class="badge badge-blue"><i class="fas fa-circle" style="font-size:6px;"></i> Scheduled</span></td>
-                                        <td><a href="#" class="action-btn primary">View</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="td-name">Sneha Joshi</span></td>
-                                        <td>Dr. Raj Mehta</td>
-                                        <td>Pediatrics</td>
-                                        <td>Mar 15, 2026 - 09:00 AM</td>
-                                        <td><span class="badge badge-red"><i class="fas fa-circle" style="font-size:6px;"></i> Cancelled</span></td>
-                                        <td><a href="#" class="action-btn primary">View</a></td>
+                                        <td>
+                                            <button class="action-btn approve"><i class="fas fa-check"></i> Approve</button>
+                                            <button class="action-btn reject" style="margin-left:6px;"><i class="fas fa-xmark"></i> Reject</button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -193,6 +170,8 @@
     </div>
 </div>
 
+<script src="../js/session-ui.js"></script>
+<script src="../js/admin.js"></script>
 <script>
     document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-IN', {
         weekday: 'long',

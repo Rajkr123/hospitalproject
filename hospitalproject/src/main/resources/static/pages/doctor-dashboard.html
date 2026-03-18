@@ -27,10 +27,10 @@
         </nav>
 
         <div class="sidebar-user">
-            <div class="user-avatar" style="background:linear-gradient(135deg,#18b889,#0f8f66);">DR</div>
+            <div class="user-avatar" data-user-initials style="background:linear-gradient(135deg,#18b889,#0f8f66);">DR</div>
             <div class="user-info">
-                <span class="name">Dr. Rajkumar</span>
-                <span class="role-tag">Cardiologist</span>
+                <span class="name" data-user-name>Dr. Rajkumar</span>
+                <span class="role-tag" data-user-role>Doctor</span>
             </div>
         </div>
     </div>
@@ -45,10 +45,10 @@
                 </div>
                 <div class="user-profile">
                     <div class="user-info">
-                        <span class="name">Dr. Rajkumar</span>
-                        <span class="role">Cardiologist</span>
+                        <span class="name" data-user-name>Dr. Rajkumar</span>
+                        <span class="role" data-user-role>Doctor</span>
                     </div>
-                    <div class="user-avatar" style="background:linear-gradient(135deg,#18b889,#0f8f66);">DR</div>
+                    <div class="user-avatar" data-user-initials style="background:linear-gradient(135deg,#18b889,#0f8f66);">DR</div>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
         <div class="content">
             <div class="hero-panel compact">
                 <div class="eyebrow"><i class="fas fa-stethoscope"></i> Clinical workflow</div>
-                <h1>Good morning, Doctor</h1>
+                <h1>Good morning, <span data-user-first-name>Doctor</span></h1>
                 <p>You have 4 appointments today and 7 pending reviews. The dashboard is organized to help you move from overview to action with less friction. Today is <span id="today-date"></span>.</p>
                 <div class="hero-meta">
                     <div class="hero-stat">
@@ -201,6 +201,7 @@
         </div>
     </div>
 </div>
+<script src="../js/session-ui.js"></script>
 <script src="../js/doctor.js"></script>
 <script>
     document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-IN', {

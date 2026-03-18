@@ -50,13 +50,13 @@ public class AppointmentService {
     public Appointment approveAppointment(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
-        appointment.setStatus("APPROVED");
+        appointment.setStatus("CONFIRMED");
         Appointment updated = appointmentRepository.save(appointment);
         try {
             emailService.sendEmail(
                     "patient@email.com",
-                    "Appointment Approved",
-                    "Your appointment has been approved by the doctor."
+                    "Appointment Confirmed",
+                    "Your appointment has been confirmed."
             );
         } catch (Exception ignored) {}
         return updated;

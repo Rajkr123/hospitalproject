@@ -27,10 +27,10 @@
         </nav>
 
         <div class="sidebar-user">
-            <div class="user-avatar">JD</div>
+            <div class="user-avatar" data-user-initials>JD</div>
             <div class="user-info">
-                <span class="name">John Doe</span>
-                <span class="role-tag">Patient</span>
+                <span class="name" data-user-name>John Doe</span>
+                <span class="role-tag" data-user-role>Patient</span>
             </div>
         </div>
     </div>
@@ -42,10 +42,10 @@
                 <div class="topbar-icon notif-dot"><i class="fas fa-bell"></i></div>
                 <div class="user-profile">
                     <div class="user-info">
-                        <span class="name">John Doe</span>
-                        <span class="role">Patient</span>
+                        <span class="name" data-user-name>John Doe</span>
+                        <span class="role" data-user-role>Patient</span>
                     </div>
-                    <div class="user-avatar">JD</div>
+                    <div class="user-avatar" data-user-initials>JD</div>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
         <div class="content">
             <div class="hero-panel">
                 <div class="eyebrow"><i class="fas fa-heart-pulse"></i> Personal care hub</div>
-                <h1>Good day, John</h1>
+                <h1>Good day, <span data-user-first-name>John</span></h1>
                 <p>Track upcoming consultations, keep an eye on health indicators, and move quickly from symptom checking to booking care. Today is <span id="today-date"></span>.</p>
                 <div class="hero-meta">
                     <div class="hero-stat">
@@ -202,6 +202,7 @@
     </div>
 </div>
 
+<script src="../js/session-ui.js"></script>
 <script>
     document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-IN', {
         weekday: 'long',
