@@ -18,13 +18,13 @@
 
         <nav class="nav-menu">
             <span class="nav-label">Overview</span>
-            <a href="admin-dashboard.html" class="nav-link active" id="nav-overview"><i class="fas fa-chart-pie"></i><span>Overview</span></a>
-            <a href="#" class="nav-link" id="nav-doctors"><i class="fas fa-user-md"></i><span>Manage Doctors</span></a>
-            <a href="#" class="nav-link" id="nav-patients"><i class="fas fa-procedures"></i><span>Manage Patients</span></a>
-            <a href="#" class="nav-link" id="nav-appointments"><i class="fas fa-calendar-check"></i><span>Appointments</span></a>
+            <a href="#" class="nav-link active" data-admin-nav="overview"><i class="fas fa-chart-pie"></i><span>Overview</span></a>
+            <a href="#" class="nav-link" data-admin-nav="doctors"><i class="fas fa-user-md"></i><span>Manage Doctors</span></a>
+            <a href="#" class="nav-link" data-admin-nav="patients"><i class="fas fa-procedures"></i><span>Manage Patients</span></a>
+            <a href="#" class="nav-link" data-admin-nav="appointments"><i class="fas fa-calendar-check"></i><span>Appointments</span></a>
             <span class="nav-label">System</span>
-            <a href="#" class="nav-link"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
-            <a href="#" class="nav-link"><i class="fas fa-gear"></i><span>Settings</span></a>
+            <a href="#" class="nav-link" data-admin-nav="analytics"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+            <a href="#" class="nav-link" data-admin-nav="settings"><i class="fas fa-gear"></i><span>Settings</span></a>
             <a href="../index.html" class="nav-link logout-bg"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
         </nav>
 
@@ -39,7 +39,7 @@
 
     <div class="main">
         <div class="topbar">
-            <h2>Admin Control Panel</h2>
+            <h2 id="adminPageTitle">Admin Control Panel</h2>
             <div class="topbar-right">
                 <div class="notification-wrap">
                     <button type="button" class="topbar-icon topbar-icon-button notif-dot" data-notification-bell data-notification-role="ADMIN">
@@ -65,141 +65,304 @@
         </div>
 
         <div class="content">
-            <div class="hero-panel compact">
-                <div class="eyebrow"><i class="fas fa-shield-halved"></i> Platform pulse</div>
-                <h1>Welcome back, <span data-user-first-name>Admin</span></h1>
-                <p>Monitor doctors, patients, appointments, and revenue from one cleaner control surface. Snapshot updated for <span id="today-date"></span>.</p>
-                <div class="hero-meta">
-                    <div class="hero-stat">
-                        <strong>42</strong>
-                        <span>Active specialists</span>
-                    </div>
-                    <div class="hero-stat">
-                        <strong>1,280</strong>
-                        <span>Registered patients</span>
-                    </div>
-                    <div class="hero-stat">
-                        <strong>Rs 4.5L</strong>
-                        <span>Monthly revenue tracked</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dashboard-grid">
-                <div class="stack">
-                    <div class="cards">
-                        <div class="card">
-                            <div class="card-icon" style="background:rgba(19,148,235,0.12);color:#1394eb;">
-                                <i class="fas fa-user-md"></i>
-                            </div>
-                            <h3>Total Doctors</h3>
-                            <div class="card-value">42</div>
-                            <p>Verified and active specialists on the platform.</p>
-                            <span class="trend up"><i class="fas fa-arrow-up"></i> +3 this month</span>
+            <section class="admin-section active" data-admin-section="overview">
+                <div class="hero-panel compact">
+                    <div class="eyebrow"><i class="fas fa-shield-halved"></i> Platform pulse</div>
+                    <h1>Welcome back, <span data-user-first-name>Admin</span></h1>
+                    <p>Monitor doctors, patients, appointments, analytics, and system settings from a single working control surface. Snapshot updated for <span id="today-date"></span>.</p>
+                    <div class="hero-meta">
+                        <div class="hero-stat">
+                            <strong id="heroDoctors">0</strong>
+                            <span>Active specialists</span>
                         </div>
-
-                        <div class="card">
-                            <div class="card-icon" style="background:rgba(24,184,137,0.12);color:#18b889;">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <h3>Registered Patients</h3>
-                            <div class="card-value">1,280</div>
-                            <p>Total users currently using SmartHealth.</p>
-                            <span class="trend up"><i class="fas fa-arrow-up"></i> +48 this week</span>
+                        <div class="hero-stat">
+                            <strong id="heroPatients">0</strong>
+                            <span>Registered patients</span>
                         </div>
-
-                        <div class="card">
-                            <div class="card-icon" style="background:rgba(245,158,11,0.16);color:#f59e0b;">
-                                <i class="fas fa-calendar-check"></i>
-                            </div>
-                            <h3>Appointments</h3>
-                            <div class="card-value">3,560</div>
-                            <p>Completed, confirmed, and pending visits.</p>
-                            <span class="trend up"><i class="fas fa-arrow-up"></i> +120 today</span>
-                        </div>
-                    </div>
-
-                    <div class="table-card">
-                        <div class="table-card-header">
-                            <h3>Recent Appointments</h3>
-                            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-                                <div class="search-bar">
-                                    <i class="fas fa-search"></i>
-                                    <input type="text" placeholder="Search appointments..." oninput="filterTable(this.value)">
-                                </div>
-                                <a href="#" class="see-all">See all</a>
-                            </div>
-                        </div>
-                        <div class="table-wrap">
-                            <table id="adminTable">
-                                <thead>
-                                    <tr>
-                                        <th>Patient</th>
-                                        <th>Doctor</th>
-                                        <th>Date &amp; Time</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="adminAppointmentsBody">
-                                    <tr>
-                                        <td><span class="td-name">Rahul Sharma</span></td>
-                                        <td>Dr. Sarah Smith</td>
-                                        <td>Mar 16, 2026 - 10:00 AM</td>
-                                        <td><span class="badge badge-yellow"><i class="fas fa-circle" style="font-size:6px;"></i> Pending</span></td>
-                                        <td>
-                                            <button class="action-btn approve"><i class="fas fa-check"></i> Approve</button>
-                                            <button class="action-btn reject" style="margin-left:6px;"><i class="fas fa-xmark"></i> Reject</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="hero-stat">
+                            <strong id="heroAppointments">0</strong>
+                            <span>Total appointments tracked</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="stack">
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-icon" style="background:rgba(19,148,235,0.12);color:#1394eb;"><i class="fas fa-user-md"></i></div>
+                        <h3>Total Doctors</h3>
+                        <div class="card-value" id="overviewDoctors">0</div>
+                        <p>Verified and active specialists on the platform.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background:rgba(24,184,137,0.12);color:#18b889;"><i class="fas fa-users"></i></div>
+                        <h3>Total Patients</h3>
+                        <div class="card-value" id="overviewPatients">0</div>
+                        <p>Patient profiles currently registered.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background:rgba(245,158,11,0.16);color:#f59e0b;"><i class="fas fa-calendar-check"></i></div>
+                        <h3>Total Appointments</h3>
+                        <div class="card-value" id="overviewAppointments">0</div>
+                        <p>Pending, confirmed, and rejected requests.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background:rgba(124,92,255,0.12);color:#7c5cff;"><i class="fas fa-hourglass-half"></i></div>
+                        <h3>Pending Approvals</h3>
+                        <div class="card-value" id="overviewPending">0</div>
+                        <p>Appointments waiting for review.</p>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-card-header">
+                        <h3>Latest Appointment Activity</h3>
+                        <button class="action-btn primary" type="button" onclick="reloadAdminSection('overview')"><i class="fas fa-rotate-right"></i> Refresh Overview</button>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Date &amp; Time</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="overviewAppointmentsBody">
+                                <tr><td colspan="5">Loading overview data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="admin-section" data-admin-section="doctors">
+                <div class="admin-toolbar">
+                    <div class="page-header">
+                        <div>
+                            <h1>Manage Doctors</h1>
+                            <p>Review all doctor accounts, contact details, and profile information in one place.</p>
+                        </div>
+                    </div>
+                    <div class="admin-toolbar-actions">
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="doctorSearch" placeholder="Search doctors..." oninput="filterAdminTable('doctorsTableBody', this.value)">
+                        </div>
+                        <button class="action-btn primary" type="button" onclick="reloadAdminSection('doctors')"><i class="fas fa-rotate-right"></i> Refresh</button>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Gender</th>
+                                    <th>Blood Group</th>
+                                </tr>
+                            </thead>
+                            <tbody id="doctorsTableBody">
+                                <tr><td colspan="5">Loading doctors...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="admin-section" data-admin-section="patients">
+                <div class="admin-toolbar">
+                    <div class="page-header">
+                        <div>
+                            <h1>Manage Patients</h1>
+                            <p>Access patient registrations, contact details, emergency contacts, and intake information.</p>
+                        </div>
+                    </div>
+                    <div class="admin-toolbar-actions">
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="patientSearch" placeholder="Search patients..." oninput="filterAdminTable('patientsTableBody', this.value)">
+                        </div>
+                        <button class="action-btn primary" type="button" onclick="reloadAdminSection('patients')"><i class="fas fa-rotate-right"></i> Refresh</button>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>DOB</th>
+                                    <th>Emergency Contact</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patientsTableBody">
+                                <tr><td colspan="5">Loading patients...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="admin-section" data-admin-section="appointments">
+                <div class="admin-toolbar">
+                    <div class="page-header">
+                        <div>
+                            <h1>Appointments</h1>
+                            <p>Review all patient appointments and approve or reject pending requests.</p>
+                        </div>
+                    </div>
+                    <div class="admin-toolbar-actions">
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="appointmentSearch" placeholder="Search appointments..." oninput="filterAdminTable('appointmentsTableBody', this.value)">
+                        </div>
+                        <button class="action-btn primary" type="button" onclick="reloadAdminSection('appointments')"><i class="fas fa-rotate-right"></i> Refresh</button>
+                    </div>
+                </div>
+
+                <div class="mini-stat-grid">
+                    <div class="mini-stat"><strong id="statTotalAppointments">0</strong><span>Total appointments</span></div>
+                    <div class="mini-stat"><strong id="statPendingAppointments">0</strong><span>Pending approvals</span></div>
+                    <div class="mini-stat"><strong id="statConfirmedAppointments">0</strong><span>Confirmed visits</span></div>
+                    <div class="mini-stat"><strong id="statRejectedAppointments">0</strong><span>Rejected requests</span></div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-wrap">
+                        <table id="adminTable">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Date &amp; Time</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointmentsTableBody">
+                                <tr><td colspan="5">Loading appointments...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="admin-section" data-admin-section="analytics">
+                <div class="page-header">
+                    <div>
+                        <h1>Analytics</h1>
+                        <p>High-level performance indicators for registrations and appointment outcomes.</p>
+                    </div>
+                </div>
+
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-icon" style="background:rgba(19,148,235,0.12);color:#1394eb;"><i class="fas fa-user-doctor"></i></div>
+                        <h3>Total Doctors</h3>
+                        <div class="card-value" id="analyticsDoctors">0</div>
+                        <p>Doctors participating on the platform.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background:rgba(24,184,137,0.12);color:#18b889;"><i class="fas fa-users"></i></div>
+                        <h3>Total Patients</h3>
+                        <div class="card-value" id="analyticsPatients">0</div>
+                        <p>Registered patient accounts.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background:rgba(245,158,11,0.16);color:#f59e0b;"><i class="fas fa-chart-column"></i></div>
+                        <h3>Completion Rate</h3>
+                        <div class="card-value" id="analyticsCompletionRate">0%</div>
+                        <p>Confirmed appointments as a share of total activity.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background:rgba(124,92,255,0.12);color:#7c5cff;"><i class="fas fa-bolt"></i></div>
+                        <h3>Engagement Rate</h3>
+                        <div class="card-value" id="analyticsEngagementRate">0%</div>
+                        <p>Appointments created relative to patient registrations.</p>
+                    </div>
+                </div>
+
+                <div class="admin-grid-2">
                     <div class="info-card">
-                        <h3>Admin priorities</h3>
+                        <h3>Appointment Breakdown</h3>
                         <div class="bullet-list">
-                            <div class="bullet-item"><i class="fas fa-circle-check"></i><span>Review pending doctor onboarding requests.</span></div>
-                            <div class="bullet-item"><i class="fas fa-circle-check"></i><span>Audit appointment cancellation trends this week.</span></div>
-                            <div class="bullet-item"><i class="fas fa-circle-check"></i><span>Check notification delivery for patient reminders.</span></div>
+                            <div class="bullet-item"><i class="fas fa-hourglass-half"></i><span>Pending: <strong id="analyticsPending">0</strong></span></div>
+                            <div class="bullet-item"><i class="fas fa-circle-check"></i><span>Confirmed: <strong id="analyticsConfirmed">0</strong></span></div>
+                            <div class="bullet-item"><i class="fas fa-circle-xmark"></i><span>Rejected: <strong id="analyticsRejected">0</strong></span></div>
                         </div>
                     </div>
 
                     <div class="info-card">
-                        <h3>System summary</h3>
+                        <h3>Operational Snapshot</h3>
                         <div class="bullet-list">
-                            <div class="bullet-item"><i class="fas fa-signal"></i><span>Appointment volume is trending positively.</span></div>
-                            <div class="bullet-item"><i class="fas fa-wallet"></i><span>Revenue is up 12% versus last month.</span></div>
-                            <div class="bullet-item"><i class="fas fa-user-group"></i><span>Patient growth remains healthy week over week.</span></div>
+                            <div class="bullet-item"><i class="fas fa-signal"></i><span id="analyticsSummaryOne">Loading current platform trends...</span></div>
+                            <div class="bullet-item"><i class="fas fa-chart-line"></i><span id="analyticsSummaryTwo">Loading appointment performance...</span></div>
+                            <div class="bullet-item"><i class="fas fa-users-gear"></i><span id="analyticsSummaryThree">Loading user growth summary...</span></div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <section class="admin-section" data-admin-section="settings">
+                <div class="page-header">
+                    <div>
+                        <h1>Settings</h1>
+                        <p>Control a few admin workspace preferences directly from the dashboard.</p>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <h2>Workspace Preferences</h2>
+                    <p class="form-desc">These settings are stored in your browser so the admin workspace feels more personalized each time you return.</p>
+
+                    <form id="adminSettingsForm">
+                        <div class="settings-grid">
+                            <div class="form-group">
+                                <label for="hospitalName">Hospital Name</label>
+                                <input type="text" id="hospitalName" placeholder="SmartHealth Hospital">
+                            </div>
+                            <div class="form-group">
+                                <label for="supportEmail">Support Email</label>
+                                <input type="email" id="supportEmail" placeholder="support@hospital.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="dashboardRefresh">Auto Refresh Interval</label>
+                                <select id="dashboardRefresh">
+                                    <option value="30000">30 seconds</option>
+                                    <option value="60000">1 minute</option>
+                                    <option value="120000">2 minutes</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="adminThemeAccent">Accent Preference</label>
+                                <select id="adminThemeAccent">
+                                    <option value="blue">Sky Blue</option>
+                                    <option value="green">Mint Green</option>
+                                    <option value="warm">Warm Amber</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-floppy-disk"></i> Save Settings</button>
+                        <p class="settings-note">This keeps the settings section working immediately without requiring a dedicated server-side preferences table.</p>
+                    </form>
+                </div>
+            </section>
         </div>
     </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script src="../js/session-ui.js"></script>
 <script src="../js/notifications.js"></script>
 <script src="../js/admin.js"></script>
-<script>
-    document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-IN', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-
-    function filterTable(q) {
-        const rows = document.querySelectorAll('#adminTable tbody tr');
-        rows.forEach(r => {
-            r.style.display = r.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
-        });
-    }
-</script>
-
 </body>
 </html>
