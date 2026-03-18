@@ -10,8 +10,6 @@
 <body>
 
 <div class="layout">
-
-    <!-- Sidebar -->
     <div class="sidebar">
         <a href="../index.html" class="brand">
             <img src="../images/modern_hospital_logo.png" alt="Logo">
@@ -19,22 +17,12 @@
         </a>
 
         <nav class="nav-menu">
-            <span class="nav-label">Menu</span>
-            <a href="patient-dashboard.html" class="nav-link">
-                <i class="fas fa-home"></i> <span>Dashboard</span>
-            </a>
-            <a href="appointment.html" class="nav-link active">
-                <i class="fas fa-calendar-plus"></i> <span>Book Appointment</span>
-            </a>
-            <a href="appointment-history.html" class="nav-link">
-                <i class="fas fa-history"></i> <span>My History</span>
-            </a>
-            <a href="ai-checker.html" class="nav-link">
-                <i class="fas fa-robot"></i> <span>AI Symptom Checker</span>
-            </a>
-            <a href="../index.html" class="nav-link logout-bg">
-                <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
-            </a>
+            <span class="nav-label">Patient Menu</span>
+            <a href="patient-dashboard.html" class="nav-link"><i class="fas fa-house"></i><span>Dashboard</span></a>
+            <a href="appointment.html" class="nav-link active"><i class="fas fa-calendar-plus"></i><span>Book Appointment</span></a>
+            <a href="appointment-history.html" class="nav-link"><i class="fas fa-clock-rotate-left"></i><span>My History</span></a>
+            <a href="ai-checker.html" class="nav-link"><i class="fas fa-robot"></i><span>AI Symptom Checker</span></a>
+            <a href="../index.html" class="nav-link logout-bg"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
         </nav>
 
         <div class="sidebar-user">
@@ -46,9 +34,7 @@
         </div>
     </div>
 
-    <!-- Main -->
     <div class="main">
-
         <div class="topbar">
             <h2>Book Appointment</h2>
             <div class="topbar-right">
@@ -63,92 +49,108 @@
         </div>
 
         <div class="content">
-
-            <div class="page-header">
-                <h1>Schedule a Consultation</h1>
-                <p>Fill in the details below to book your appointment with a specialist.</p>
+            <div class="hero-panel compact">
+                <div class="eyebrow"><i class="fas fa-calendar-heart"></i> Guided booking</div>
+                <h1>Schedule a consultation</h1>
+                <p>Use the updated booking flow to select a specialty, choose a doctor, and lock in a time slot with clearer context around what happens next.</p>
             </div>
 
             <div class="form-container">
-                <div class="form-card">
-                    <h2><i class="fas fa-calendar-plus" style="color:#0ea5e9;margin-right:8px;"></i> New Appointment</h2>
-                    <p class="form-desc">All fields are required. You'll receive a confirmation once the doctor approves.</p>
+                <div class="form-grid">
+                    <div class="form-card">
+                        <h2><i class="fas fa-calendar-plus" style="color:#1394eb;margin-right:8px;"></i> New Appointment</h2>
+                        <p class="form-desc">All fields are required except symptoms. You will receive confirmation once the doctor approves your request.</p>
 
-                    <form id="appointmentForm" onsubmit="bookAppointment(event)">
+                        <form id="appointmentForm" onsubmit="bookAppointment(event)">
+                            <div class="form-group">
+                                <label for="patientName">Patient Name</label>
+                                <input type="text" id="patientName" placeholder="Enter your full name" required>
+                            </div>
 
-                        <div class="form-group">
-                            <label>Patient Name</label>
-                            <input type="text" id="patientName" placeholder="Enter your full name" required>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="specialty">Select Specialty</label>
+                                    <select id="specialty" onchange="updateDoctors()" required>
+                                        <option value="" disabled selected>Choose specialty</option>
+                                        <option value="cardiology">Cardiology</option>
+                                        <option value="neuro">Neurology</option>
+                                        <option value="general">General Medicine</option>
+                                        <option value="ortho">Orthopedics</option>
+                                        <option value="pediatrics">Pediatrics</option>
+                                        <option value="dermatology">Dermatology</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="doctor">Select Doctor</label>
+                                    <select id="doctor" required>
+                                        <option value="" disabled selected>Select doctor</option>
+                                        <option value="1">Dr. Sarah Smith</option>
+                                        <option value="2">Dr. Mike Johnson</option>
+                                        <option value="3">Dr. Anita Rao</option>
+                                        <option value="4">Dr. Raj Mehta</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="appDate">Appointment Date</label>
+                                    <input type="date" id="appDate" required min="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="appTime">Preferred Time</label>
+                                    <select id="appTime" required>
+                                        <option value="" disabled selected>Select time slot</option>
+                                        <option value="09:00">09:00 AM</option>
+                                        <option value="10:00">10:00 AM</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="12:00">12:00 PM</option>
+                                        <option value="14:00">02:00 PM</option>
+                                        <option value="15:00">03:00 PM</option>
+                                        <option value="16:00">04:00 PM</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reason">Reason or Symptoms</label>
+                                <textarea id="reason" rows="4" placeholder="Briefly describe your symptoms or the reason for your visit..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary" id="bookBtn">
+                                <i class="fas fa-calendar-check"></i> Confirm Booking
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="stack">
+                        <div class="info-card">
+                            <h3>Before you submit</h3>
+                            <div class="bullet-list">
+                                <div class="bullet-item"><i class="fas fa-circle-check"></i><span>Choose the specialty that best matches your main concern.</span></div>
+                                <div class="bullet-item"><i class="fas fa-circle-check"></i><span>Add symptoms or context to help the doctor prepare.</span></div>
+                                <div class="bullet-item"><i class="fas fa-circle-check"></i><span>Watch for a follow-up confirmation after booking.</span></div>
+                            </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Select Specialty</label>
-                                <select id="specialty" onchange="updateDoctors()" required>
-                                    <option value="" disabled selected>Choose specialty</option>
-                                    <option value="cardiology">Cardiology</option>
-                                    <option value="neuro">Neurology</option>
-                                    <option value="general">General Medicine</option>
-                                    <option value="ortho">Orthopedics</option>
-                                    <option value="pediatrics">Pediatrics</option>
-                                    <option value="dermatology">Dermatology</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Select Doctor</label>
-                                <select id="doctor" required>
-                                    <option value="" disabled selected>Select doctor</option>
-                                    <option value="1">Dr. Sarah Smith</option>
-                                    <option value="2">Dr. Mike Johnson</option>
-                                    <option value="3">Dr. Anita Rao</option>
-                                    <option value="4">Dr. Raj Mehta</option>
-                                </select>
+                        <div class="info-card">
+                            <h3>Need help deciding?</h3>
+                            <div class="bullet-list">
+                                <div class="bullet-item"><i class="fas fa-robot"></i><span>Try the AI checker first if you are unsure which specialist to book.</span></div>
+                                <div class="bullet-item"><i class="fas fa-calendar-days"></i><span>Use the schedule view for a simpler calendar-style booking path.</span></div>
                             </div>
                         </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Appointment Date</label>
-                                <input type="date" id="appDate" required min="">
-                            </div>
-                            <div class="form-group">
-                                <label>Preferred Time</label>
-                                <select id="appTime" required>
-                                    <option value="" disabled selected>Select time slot</option>
-                                    <option value="09:00">09:00 AM</option>
-                                    <option value="10:00">10:00 AM</option>
-                                    <option value="11:00">11:00 AM</option>
-                                    <option value="12:00">12:00 PM</option>
-                                    <option value="14:00">02:00 PM</option>
-                                    <option value="15:00">03:00 PM</option>
-                                    <option value="16:00">04:00 PM</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Reason / Symptoms (optional)</label>
-                            <textarea id="reason" rows="3" placeholder="Briefly describe your symptoms or reason for visit..."></textarea>
-                        </div>
-
-                        <button type="submit" class="btn-primary" id="bookBtn">
-                            <i class="fas fa-calendar-check"></i> Confirm Booking
-                        </button>
-
-                    </form>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script src="../js/appointment.js"></script>
 <script>
-    // Set min date to today
     document.getElementById('appDate').min = new Date().toISOString().split('T')[0];
 
     function showToast(msg, type) {
@@ -165,8 +167,8 @@
         btn.disabled = true;
 
         const token = localStorage.getItem('token');
-        const patientId = 1; // Replace with session value
-        const doctorId  = parseInt(document.getElementById('doctor').value);
+        const patientId = 1;
+        const doctorId = parseInt(document.getElementById('doctor').value, 10);
 
         fetch('http://localhost:8083/api/appointments', {
             method: 'POST',
@@ -178,11 +180,11 @@
             return res.json();
         })
         .then(() => {
-            showToast('Appointment booked! Awaiting doctor confirmation.', 'success');
+            showToast('Appointment booked. Awaiting doctor confirmation.', 'success');
             setTimeout(() => window.location.href = 'patient-dashboard.html', 1500);
         })
         .catch(() => {
-            showToast('Appointment request submitted (demo mode).', 'success');
+            showToast('Appointment request submitted in demo mode.', 'success');
             btn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirm Booking';
             btn.disabled = false;
         });
