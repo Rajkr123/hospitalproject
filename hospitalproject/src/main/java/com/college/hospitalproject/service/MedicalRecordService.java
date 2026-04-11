@@ -19,7 +19,10 @@ public class MedicalRecordService {
         return repository.save(record);
     }
 
-    public List<MedicalRecord> getPatientRecords(Long patientId) {
+    public List<MedicalRecord> getRecordsByPatient(Long patientId) {
         return repository.findByPatientId(patientId);
+    }
+    public List<MedicalRecord> getRecordsByDoctor(Long doctorId) {
+        return repository.findByDoctorId(doctorId);
     }
 }

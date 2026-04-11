@@ -23,7 +23,7 @@ public class MedicalRecordController {
     }
 
     @GetMapping("/patient/{patientId}")
-    public List<MedicalRecord> getRecords(@PathVariable Long patientId) {
-        return service.getPatientRecords(patientId);
+    public List<MedicalRecord> getPatientRecords(@PathVariable Long patientId) {
+        return service.getRecordsByPatient(patientId);
     }
 }

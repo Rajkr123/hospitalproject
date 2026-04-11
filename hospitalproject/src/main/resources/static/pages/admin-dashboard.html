@@ -300,6 +300,17 @@
                         </div>
                     </div>
 
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <h3>📈 Daily Revenue Chart</h3>
+                        </div>
+
+                        <div style="padding:20px;">
+                            <canvas id="appointmentChart"></canvas>
+                        </div>
+                    </div>
+
+
                     <div class="info-card">
                         <h3>Operational Snapshot</h3>
                         <div class="bullet-list">
@@ -354,6 +365,7 @@
                         <p class="settings-note">This keeps the settings section working immediately without requiring a dedicated server-side preferences table.</p>
                     </form>
                 </div>
+
             </section>
         </div>
     </div>
@@ -362,6 +374,12 @@
 <div class="toast" id="toast"></div>
 
 <script src="../js/session-ui.js"></script>
+
+<!-- Chart JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="../js/Admin-Chart.js"></script>  <!-- ✅ ADD THIS -->
+
 <script src="../js/notifications.js"></script>
 <script src="../js/admin.js"></script>
 </body>

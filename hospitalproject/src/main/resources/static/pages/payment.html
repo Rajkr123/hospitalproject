@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | SmartHealth</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+
+    <!-- Razorpay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <style>
+        .payment-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .pay-btn {
+            background: #2c7be5;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .pay-btn:hover {
+            background: #1a5edb;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .modal-content button {
+            margin: 10px;
+            padding: 8px 15px;
+            border: none;
+            background: #2c7be5;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background: #1a5edb;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>SmartHealth</h2>
+        <a href="/pages/appointment.html">Book Appointment</a>
+        <a href="/pages/payment.html" class="active">Payment</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <h2>Complete Payment</h2>
+
+        <div class="payment-card">
+            <p><strong>Consultation Fee:</strong> ₹647</p>
+
+            <button onclick="processPayment()" class="pay-btn">
+                Pay ₹647 Securely
+            </button>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="modal">
+            <div class="modal-content">
+                <h3>✅ Payment Successful!</h3>
+                <p>Your appointment is confirmed.</p>
+                <button onclick="goToDashboard()">Go to Dashboard</button>
+                <button onclick="downloadReceipt()">Download Receipt</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    const API_BASE = "http://localhost:8083";
+
+    // ✅ Payment Function
+    function processPayment() {
+
+        const appointmentId = localStorage.getItem("lastBookedAppointmentId");
+
+        if (!appointmentId) {
+            alert("❌ Appointment not found. Please book again.");
+            return;
+        }
+
+        fetch(API_BASE + "/api/payment/create-order?amount=647", {
+            method: "POST"
+        })
+        .then(res => res.json())
+        .then(order => {
+
+            var options = {
+                key: "rzp_test_Sb67cq4a9wW94Y",
+                amount: order.amount,
+                currency: "INR",
+                name: "SmartHealth",
+                description: "Appointment Payment",
+                order_id: order.id,
+
+                handler: async function (response) {
+
+                    await fetch(API_BASE + "/api/payment/verify", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature,
+                            appointmentId: appointmentId
+                        })
+                    });
+
+                    // ✅ Show Success Modal
+                    document.getElementById("successModal").style.display = "flex";
+                }
+            };
+
+            var rzp = new Razorpay(options);
+            rzp.open();
+        })
+        .catch(err => console.error(err));
+    }
+
+    // ✅ Download Receipt
+    function downloadReceipt() {
+        const appointmentId = localStorage.getItem("lastBookedAppointmentId");
+        window.open(`${API_BASE}/api/payment/receipt/${appointmentId}`);
+    }
+
+    // ✅ Redirect
+    function goToDashboard() {
+        window.location.href = "/pages/patient-dashboard.html";
+    }
+
+</script>
+
+</body>
+</html>

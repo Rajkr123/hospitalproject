@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="appointment")
+@Table(name = "appointment")
 public class Appointment {
 
     @Id
@@ -12,44 +12,58 @@ public class Appointment {
     private Long id;
 
     private Long doctorId;
-
     private Long patientId;
-
     private Long slotId;
 
     private LocalDateTime appointmentTime;
 
     private String status;
 
-    public Appointment(){}
+    private String paymentStatus = "UNPAID";
 
-    public Appointment(Long doctorId, Long patientId, Long slotId, LocalDateTime appointmentTime, String status){
-        this.doctorId = doctorId;
-        this.patientId = patientId;
-        this.slotId = slotId;
-        this.appointmentTime = appointmentTime;
-        this.status = status;
-    }
+    private String paymentId;
+    private String orderId;
 
-    public Long getId(){ return id; }
+    private int amount;
 
-    public Long getDoctorId(){ return doctorId; }
+    private String patientName;
+    private String doctorName;
 
-    public Long getPatientId(){ return patientId; }
+    private LocalDateTime createdAt;
 
-    public Long getSlotId(){ return slotId; }
+    @Column(length = 1000)
+    private String notes;
 
-    public LocalDateTime getAppointmentTime(){ return appointmentTime; }
+    // ✅ GETTERS
 
-    public String getStatus(){ return status; }
+    public Long getId() { return id; }
+    public Long getDoctorId() { return doctorId; }
+    public Long getPatientId() { return patientId; }
+    public Long getSlotId() { return slotId; }
+    public LocalDateTime getAppointmentTime() { return appointmentTime; }
+    public String getStatus() { return status; }
+    public String getPaymentStatus() { return paymentStatus; }
+    public String getPaymentId() { return paymentId; }
+    public String getOrderId() { return orderId; }
+    public int getAmount() { return amount; }
+    public String getPatientName() { return patientName; }
+    public String getDoctorName() { return doctorName; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public String getNotes() { return notes; }
 
-    public void setDoctorId(Long doctorId){ this.doctorId = doctorId; }
+    // ✅ SETTERS
 
-    public void setPatientId(Long patientId){ this.patientId = patientId; }
-
-    public void setSlotId(Long slotId){ this.slotId = slotId; }
-
-    public void setAppointmentTime(LocalDateTime appointmentTime){ this.appointmentTime = appointmentTime; }
-
-    public void setStatus(String status){ this.status = status; }
+    public void setDoctorId(Long doctorId) { this.doctorId = doctorId; }
+    public void setPatientId(Long patientId) { this.patientId = patientId; }
+    public void setSlotId(Long slotId) { this.slotId = slotId; }
+    public void setAppointmentTime(LocalDateTime appointmentTime) { this.appointmentTime = appointmentTime; }
+    public void setStatus(String status) { this.status = status; }
+    public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
+    public void setPaymentId(String paymentId) { this.paymentId = paymentId; }
+    public void setOrderId(String orderId) { this.orderId = orderId; }
+    public void setAmount(int amount) { this.amount = amount; }
+    public void setPatientName(String patientName) { this.patientName = patientName; }
+    public void setDoctorName(String doctorName) { this.doctorName = doctorName; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setNotes(String notes) { this.notes = notes; }
 }

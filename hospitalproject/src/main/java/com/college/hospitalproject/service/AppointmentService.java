@@ -2,7 +2,6 @@ package com.college.hospitalproject.service;
 
 import com.college.hospitalproject.model.Appointment;
 import com.college.hospitalproject.repository.AppointmentRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,9 @@ public class AppointmentService {
     // ✅ Book Appointment
     public Appointment bookAppointment(Appointment appointment) {
         appointment.setStatus("PENDING");
+
         Appointment saved = appointmentRepository.save(appointment);
+
         try {
             emailService.sendEmail(
                     "patient@email.com",
@@ -28,6 +29,7 @@ public class AppointmentService {
                     "Your appointment has been booked. The doctor will review it soon."
             );
         } catch (Exception ignored) {}
+
         return saved;
     }
 
@@ -46,12 +48,17 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
 
+
+
     // ✅ Doctor Approve Appointment
     public Appointment approveAppointment(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
         appointment.setStatus("CONFIRMED");
+
         Appointment updated = appointmentRepository.save(appointment);
+
         try {
             emailService.sendEmail(
                     "patient@email.com",
@@ -59,15 +66,29 @@ public class AppointmentService {
                     "Your appointment has been confirmed."
             );
         } catch (Exception ignored) {}
+
         return updated;
+    }
+
+    // ✅ COMPLETE APPOINTMENT (FIXED 🔥)
+    public Appointment completeAppointment(Long id) {
+        Appointment appt = appointmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+        appt.setStatus("COMPLETED");
+
+        return appointmentRepository.save(appt);
     }
 
     // ✅ Doctor Reject Appointment
     public Appointment rejectAppointment(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
         appointment.setStatus("REJECTED");
+
         Appointment updated = appointmentRepository.save(appointment);
+
         try {
             emailService.sendEmail(
                     "patient@email.com",
@@ -75,6 +96,7 @@ public class AppointmentService {
                     "Your appointment request has been rejected by the doctor."
             );
         } catch (Exception ignored) {}
+
         return updated;
     }
 }

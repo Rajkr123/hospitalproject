@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Chatbot</title>
+</head>
+<body>
+
+<h2>AI Symptom Checker</h2>
+
+<input type="text" id="msg" placeholder="Enter symptoms">
+<button onclick="send()">Ask AI</button>
+
+<p id="response"></p>
+
+<script>
+    function send() {
+        let msg = document.getElementById("msg").value;
+
+        fetch("/api/ai/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: msg })
+        })
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("response").innerText = data;
+        });
+    }
+</script>
+
+</body>
+</html>
