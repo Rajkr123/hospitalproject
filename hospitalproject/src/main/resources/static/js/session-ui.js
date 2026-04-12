@@ -24,11 +24,21 @@ function formatRole(role) {
     return role || 'User';
 }
 
-function applySessionUi() {
-    const name = getStoredName();
-    const role = getStoredRole();
+function clearStoredSession() {
+    ['token', 'userId', 'name', 'email', 'role'].forEach(key => localStorage.removeItem(key));
+}
 
-    if (!name) return;
+function bindLogoutLinks() {
+    document.querySelectorAll('.logout-bg').forEach(link => {
+        link.addEventListener('click', () => {
+            clearStoredSession();
+        });
+    });
+}
+
+function applySessionUi() {
+    const name = getStoredName() || 'Guest User';
+    const role = getStoredRole();
 
     document.querySelectorAll('[data-user-name]').forEach(el => {
         el.textContent = name;
@@ -47,4 +57,7 @@ function applySessionUi() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', applySessionUi);
+document.addEventListener('DOMContentLoaded', () => {
+    bindLogoutLinks();
+    applySessionUi();
+});

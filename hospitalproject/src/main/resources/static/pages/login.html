@@ -40,6 +40,10 @@
                     <strong>Patient</strong>
                     <span>Appointments and records</span>
                 </button>
+                <button type="button" class="role-option" data-role="DOCTOR" onclick="selectRole('DOCTOR', this)">
+                    <strong>Doctor</strong>
+                    <span>Clinical dashboard access</span>
+                </button>
                 <button type="button" class="role-option" data-role="ADMIN" onclick="selectRole('ADMIN', this)">
                     <strong>Admin</strong>
                     <span>Control panel access</span>
@@ -109,21 +113,30 @@
 
         const hints = {
             PATIENT: 'Signing in as a patient will open the patient dashboard after authentication.',
+            DOCTOR: 'Signing in as a doctor will open the doctor dashboard after authentication.',
             ADMIN: 'Signing in as an admin will open the admin control panel after authentication.'
         };
 
         document.getElementById('roleHint').textContent = hints[role];
         document.querySelector('.auth-kicker').innerHTML = role === 'ADMIN'
             ? '<i class="fas fa-user-shield"></i> Admin sign in'
+            : role === 'DOCTOR'
+                ? '<i class="fas fa-user-doctor"></i> Doctor sign in'
             : '<i class="fas fa-lock"></i> Sign in';
         document.querySelector('.auth-form-panel h3').textContent = role === 'ADMIN'
             ? 'Access the admin control panel'
+            : role === 'DOCTOR'
+                ? 'Access the doctor workspace'
             : 'Access your account';
         document.querySelector('.sub-text').textContent = role === 'ADMIN'
             ? 'Enter administrator credentials to continue into the SmartHealth control center.'
+            : role === 'DOCTOR'
+                ? 'Enter doctor credentials to continue into your SmartHealth clinical dashboard.'
             : 'Enter your credentials to continue into your SmartHealth dashboard.';
         document.getElementById('loginBtn').innerHTML = role === 'ADMIN'
             ? '<i class="fas fa-user-shield"></i> Sign In As Admin'
+            : role === 'DOCTOR'
+                ? '<i class="fas fa-user-doctor"></i> Sign In As Doctor'
             : '<i class="fas fa-right-to-bracket"></i> Sign In';
     }
 
@@ -195,6 +208,8 @@
             showToast(err.message || 'Login failed. Please try again.', 'error');
             btn.innerHTML = selectedRole === 'ADMIN'
                 ? '<i class="fas fa-user-shield"></i> Sign In As Admin'
+                : selectedRole === 'DOCTOR'
+                    ? '<i class="fas fa-user-doctor"></i> Sign In As Doctor'
                 : '<i class="fas fa-right-to-bracket"></i> Sign In';
             btn.disabled = false;
         });

@@ -152,8 +152,31 @@
 <script src="../js/session-ui.js"></script>
 <script src="../js/appointment.js"></script>
 <script>
-    document.getElementById('appDate').min = new Date().toISOString().split('T')[0];
-    document.getElementById('patientName').value = localStorage.getItem('name') || '';
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+    if (!token || !userId) {
+        window.location.href = 'register.html';
+    }
+
+    const appointmentForm = document.getElementById('appointmentForm');
+    const patientNameInput = document.getElementById('patientName');
+    const specialtySelect = document.getElementById('specialty');
+    const doctorSelect = document.getElementById('doctor');
+    const appDateInput = document.getElementById('appDate');
+    const appTimeSelect = document.getElementById('appTime');
+    const reasonInput = document.getElementById('reason');
+
+    localStorage.removeItem('lastBookedAppointmentId');
+
+    appointmentForm.reset();
+    appDateInput.min = new Date().toISOString().split('T')[0];
+    patientNameInput.value = localStorage.getItem('name') || '';
+    specialtySelect.selectedIndex = 0;
+    doctorSelect.selectedIndex = 0;
+    appDateInput.value = '';
+    appTimeSelect.selectedIndex = 0;
+    reasonInput.value = '';
 
     function showToast(msg, type) {
         const t = document.getElementById('toast');
@@ -168,28 +191,36 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
         btn.disabled = true;
 
-        const token = localStorage.getItem('token');
-        const patientId = parseInt(localStorage.getItem('userId'), 10);
-        const doctorId = parseInt(document.getElementById('doctor').value, 10);
-        const appDate = document.getElementById('appDate').value;
-        const appTime = document.getElementById('appTime').value;
+        const patientIdRaw = localStorage.getItem('userId');
+        const patientId = patientIdRaw ? parseInt(patientIdRaw, 10) : null;
+        const patientName = patientNameInput.value.trim();
+        const doctorId = parseInt(doctorSelect.value, 10);
+        const appDate = appDateInput.value;
+        const appTime = appTimeSelect.value;
 
-        if (!token || !patientId || !doctorId || !appDate || !appTime) {
+        if (!patientName || !doctorId || !appDate || !appTime) {
             showToast('Please complete all required fields before booking.', 'error');
             btn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirm Booking';
             btn.disabled = false;
             return;
         }
 
-        const appointmentTime = appDate + 'T' + appTime + ':00';
+        const doctorName = doctorSelect.options[doctorSelect.selectedIndex]?.text || '';
 
         fetch('http://localhost:8083/api/appointments/book', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+            },
             body: JSON.stringify({
                 patientId,
+                patientName,
                 doctorId,
-                appointmentTime,
+                doctorName,
+                date: appDate,
+                time: appTime,
+                symptoms: reasonInput.value.trim(),
                 status: 'PENDING'
             })
         })
@@ -197,9 +228,13 @@
             if (!res.ok) throw new Error('Unable to submit appointment request right now.');
             return res.json();
         })
-        .then(() => {
-            showToast('Appointment submitted. We will reach you soon as your appointment gets confirmed.', 'success');
-            setTimeout(() => window.location.href = 'patient-dashboard.html', 1500);
+        .then(payload => {
+            const appointmentId = payload?.data?.id;
+            if (!appointmentId) throw new Error('Appointment created but payment could not be started.');
+
+            localStorage.setItem('lastBookedAppointmentId', String(appointmentId));
+            showToast('Appointment submitted. Redirecting to payment...', 'success');
+            setTimeout(() => window.location.href = 'payment.html', 1200);
         })
         .catch(err => {
             showToast(err.message || 'Unable to submit appointment request right now.', 'error');

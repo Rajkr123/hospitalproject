@@ -31,3 +31,29 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Sensitive / Local Config ###
+.env
+.env.*
+!.env.example
+*.local
+*.secret
+secrets/
+credentials/
+*.pem
+*.key
+*.p12
+*.jks
+
+### Spring local overrides (keep real secrets out of Git) ###
+src/main/resources/application.properties
+src/main/resources/application-local.properties
+src/main/resources/application-dev.properties
+src/main/resources/application-prod.properties
+
+### Runtime / generated ###
+logs/
+*.log
+uploads/
+tmp/
+*.tmp

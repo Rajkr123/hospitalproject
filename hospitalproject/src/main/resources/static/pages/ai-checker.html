@@ -75,60 +75,51 @@
 
 <script src="../js/session-ui.js"></script>
 <script>
-    const KB = {
-        fever: { emoji: 'Thermometer', result: 'Possible conditions: Viral fever, flu, or malaria. Recommendation: Stay hydrated, rest, and consult a doctor if the fever exceeds 103 F or lasts more than 3 days.' },
-        headache: { emoji: 'Headache', result: 'Possible conditions: Tension headache, migraine, dehydration, or sinusitis. Recommendation: Rest, hydrate, and seek care if headaches become frequent or severe.' },
-        cough: { emoji: 'Cough', result: 'Possible conditions: Common cold, bronchitis, allergies, or COVID-19. Recommendation: Stay hydrated and seek care if the cough lasts longer than 2 weeks or causes breathing difficulty.' },
-        chest: { emoji: 'Urgent', result: 'Possible conditions include acid reflux, angina, or lung-related issues. Urgent note: chest pain can be serious, so please seek immediate medical help.' },
-        fatigue: { emoji: 'Fatigue', result: 'Possible conditions: anemia, thyroid disorder, sleep issues, or depression. Recommendation: Rest well, eat balanced meals, and get evaluated if fatigue persists.' },
-        stomach: { emoji: 'Stomach', result: 'Possible conditions: gastritis, food poisoning, IBS, or appendicitis. Recommendation: Stay hydrated and seek urgent care if pain is severe.' },
-        cold: { emoji: 'Cold', result: 'Possible conditions: common cold, rhinitis, or sinusitis. Recommendation: Rest, warm fluids, and seek care if symptoms last beyond 10 days.' },
-        back: { emoji: 'Back pain', result: 'Possible conditions: muscle strain, disc issues, or kidney-related causes. Recommendation: Avoid heavy lifting and seek care if pain radiates or becomes severe.' },
-        diabetes: { emoji: 'Diabetes', result: 'Symptoms like excessive thirst or urination may suggest diabetes. Recommendation: Check blood sugar levels and consult an endocrinologist.' },
-        default: { emoji: 'General', result: 'I could not find a close symptom match. For a more accurate evaluation, please book an appointment with one of our specialists.' }
-    };
+    async function checkSymptom() {
 
-    function checkSymptom() {
-        const input = document.getElementById('symptom');
-        const val = input.value.trim();
-        if (!val) return;
+    const input = document.getElementById('symptom');
+    const val = input.value.trim();
 
-        appendMsg(val, 'user');
-        input.value = '';
+    if (!val) return;
 
-        const box = document.getElementById('chatBox');
-        const typing = document.createElement('div');
-        typing.className = 'msg bot';
-        typing.innerHTML = '<i class="fas fa-ellipsis"></i> Analyzing your symptoms...';
-        box.appendChild(typing);
-        box.scrollTop = box.scrollHeight;
+    appendMsg(val, 'user');
+    input.value = '';
 
-        setTimeout(() => {
-            typing.remove();
-            const lc = val.toLowerCase();
-            let result = KB.default;
-            for (const [key, val2] of Object.entries(KB)) {
-                if (key !== 'default' && lc.includes(key)) {
-                    result = val2;
-                    break;
-                }
-            }
-            appendMsg('<strong>' + result.emoji + ' analysis:</strong><br><br>' + result.result, 'bot', true);
-        }, 1200);
+    const box = document.getElementById('chatBox');
+
+    const typing = document.createElement('div');
+    typing.className = 'msg bot';
+    typing.innerHTML = '<i class="fas fa-ellipsis"></i> Analyzing your symptoms...';
+    box.appendChild(typing);
+
+    box.scrollTop = box.scrollHeight;
+
+    try {
+        const response = await fetch("/api/ai/analyze", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ symptoms: val })
+        });
+
+        const data = await response.json();
+
+        typing.remove();
+
+        appendMsg(
+            `<strong>Disease:</strong> ${data.disease}<br><br>
+             <strong>Doctor:</strong> ${data.doctorType}<br><br>
+             <strong>Advice:</strong> ${data.advice}`,
+            'bot',
+            true
+        );
+
+    } catch (error) {
+        typing.remove();
+        appendMsg("Error connecting to AI service ❌", 'bot');
     }
-
-    function appendMsg(text, type, isHtml = false) {
-        const box = document.getElementById('chatBox');
-        const div = document.createElement('div');
-        div.className = 'msg ' + type;
-        if (isHtml) {
-            div.innerHTML = text;
-        } else {
-            div.textContent = text;
-        }
-        box.appendChild(div);
-        box.scrollTop = box.scrollHeight;
-    }
+}
 </script>
 
 </body>

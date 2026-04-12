@@ -18,6 +18,29 @@ public class Appointment {
     private LocalDateTime appointmentTime;
 
     private String status;
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getSymptoms() {
+        return symptoms;
+    }
+
+    public void setSymptoms(String symptoms) {
+        this.symptoms = symptoms;
+    }
 
     private String paymentStatus = "UNPAID";
 
@@ -28,6 +51,9 @@ public class Appointment {
 
     private String patientName;
     private String doctorName;
+    private String date;      // ✅ IMPORTANT
+    private String time;      // ✅ IMPORTANT
+    private String symptoms;
 
     private LocalDateTime createdAt;
 
@@ -66,4 +92,6 @@ public class Appointment {
     public void setDoctorName(String doctorName) { this.doctorName = doctorName; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public void setNotes(String notes) { this.notes = notes; }
+
+
 }
