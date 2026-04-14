@@ -14,8 +14,8 @@
     <div class="auth-image-panel" style="background: linear-gradient(160deg, #0f172a 0%, #0c4a6e 60%, #0a3d4d 100%), url('../images/modern_hospital_hero.png') center/cover;">
         <div class="panel-content">
             <div class="panel-badge"><i class="fas fa-star"></i> Join SmartHealth</div>
-            <h2>Create your patient account with complete intake details</h2>
-            <p>Share the core information hospitals usually need up front so appointments, records, and follow-up care can run more smoothly.</p>
+            <h2 id="panelTitle">Create your patient account with complete intake details</h2>
+            <p id="panelDesc">Share the core information hospitals usually need up front so appointments, records, and follow-up care can run more smoothly.</p>
             <div class="panel-features">
                 <div class="panel-feature"><i class="fas fa-check-circle"></i> Faster appointment access</div>
                 <div class="panel-feature"><i class="fas fa-check-circle"></i> Better patient identification and records</div>
@@ -30,23 +30,25 @@
             <h2>SmartHealth</h2>
         </div>
 
-        <div class="auth-kicker"><i class="fas fa-user-plus"></i> Register</div>
-        <h3>Open your SmartHealth account</h3>
-        <p class="sub-text">Fill in the mandatory details below to create your patient or doctor profile.</p>
+        <div class="auth-kicker" id="regKicker"><i class="fas fa-user-plus"></i> Register</div>
+        <h3 id="regTitle">Open your SmartHealth account</h3>
+        <p class="sub-text" id="regSubtitle">Fill in the mandatory details below to create your patient profile.</p>
 
         <form id="registerForm" onsubmit="handleRegister(event)">
-            <div class="role-switcher" aria-label="Account type" style="margin-bottom:18px;">
+            <!-- Role switcher -->
+            <div class="role-switcher" aria-label="Account type" style="margin-bottom:18px;" id="roleSwitcher">
                 <button type="button" class="role-option active" data-role="PATIENT" onclick="selectRegisterRole('PATIENT', this)">
                     <strong>Patient</strong>
                     <span>Appointments and records</span>
                 </button>
-                <button type="button" class="role-option" data-role="DOCTOR" onclick="selectRegisterRole('DOCTOR', this)">
+                <button type="button" class="role-option" data-role="DOCTOR" id="doctorRoleBtn" onclick="selectRegisterRole('DOCTOR', this)">
                     <strong>Doctor</strong>
                     <span>Clinical dashboard access</span>
                 </button>
             </div>
 
             <div class="form-grid">
+                <!-- ── IDENTITY ── -->
                 <div class="form-section">
                     <div class="form-section-title" id="identitySectionTitle"><i class="fas fa-user"></i> Identity Details</div>
                 </div>
@@ -59,7 +61,6 @@
                             <input type="text" id="name" placeholder="John Doe" required autocomplete="name">
                         </div>
                     </div>
-
                     <div class="input-group">
                         <label for="dob">Date Of Birth</label>
                         <div class="input-wrapper">
@@ -82,7 +83,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="input-group">
                         <label for="bloodGroup">Blood Group</label>
                         <div class="input-wrapper">
@@ -102,6 +102,7 @@
                     </div>
                 </div>
 
+                <!-- ── CONTACT ── -->
                 <div class="form-section">
                     <div class="form-section-title"><i class="fas fa-address-card"></i> Contact Information</div>
                 </div>
@@ -114,7 +115,6 @@
                             <input type="email" id="email" placeholder="john.doe@example.com" required autocomplete="email">
                         </div>
                     </div>
-
                     <div class="input-group">
                         <label for="phone">Mobile Number</label>
                         <div class="input-wrapper">
@@ -132,7 +132,6 @@
                             <input type="tel" id="emergencyContact" placeholder="9876543211" required pattern="[0-9]{10}" inputmode="numeric">
                         </div>
                     </div>
-
                     <div class="input-group">
                         <label for="password">Password</label>
                         <div class="input-wrapper">
@@ -151,8 +150,56 @@
                     </div>
                 </div>
 
+                <!-- ── DOCTOR-ONLY FIELDS ── -->
+                <div id="doctorFields" style="display:none;">
+                    <div class="form-section">
+                        <div class="form-section-title"><i class="fas fa-stethoscope"></i> Doctor Professional Details</div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="specialization">Specialization <span style="color:#e53e3e">*</span></label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user-doctor"></i>
+                                <select id="specialization">
+                                    <option value="" disabled selected>Select specialization</option>
+                                    <option>Cardiology</option>
+                                    <option>Neurology</option>
+                                    <option>Orthopedics</option>
+                                    <option>Pediatrics</option>
+                                    <option>Dermatology</option>
+                                    <option>Oncology</option>
+                                    <option>Ophthalmology</option>
+                                    <option>General Medicine</option>
+                                    <option>Psychiatry</option>
+                                    <option>Gynecology</option>
+                                    <option>ENT</option>
+                                    <option>Radiology</option>
+                                    <option>Urology</option>
+                                    <option>Gastroenterology</option>
+                                    <option>Pulmonology</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="qualification">Qualification <span style="color:#e53e3e">*</span></label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-graduation-cap"></i>
+                                <input type="text" id="qualification" placeholder="e.g. MBBS, MD, MS">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="experience">Years of Experience <span style="color:#e53e3e">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-briefcase-medical"></i>
+                            <input type="number" id="experience" placeholder="e.g. 5" min="0" max="60">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── ACCOUNT TYPE HINT ── -->
                 <div class="helper-panel" style="margin-top:0;">
-                    <h4>Account type</h4>
+                    <h4 id="accountTypeHintTitle">Account type</h4>
                     <p id="accountTypeHint">You are creating a patient account.</p>
                     <input type="hidden" id="role" value="patient">
                 </div>
@@ -165,7 +212,7 @@
 
         <div class="helper-panel">
             <h4>What happens next?</h4>
-            <p>After registration, you will be taken to sign in so your patient session starts cleanly before entering the dashboard.</p>
+            <p>After registration, you will be taken to sign in so your session starts cleanly before entering the dashboard.</p>
         </div>
 
         <div class="switch-auth">
@@ -180,26 +227,54 @@
 <script>
     let selectedRegisterRole = 'PATIENT';
 
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('role') === 'patient') {
+            const doctorBtn = document.getElementById('doctorRoleBtn');
+            if (doctorBtn) doctorBtn.style.display = 'none';
+            selectRegisterRole('PATIENT', document.querySelector('.role-option[data-role="PATIENT"]'));
+        }
+    });
+
     function selectRegisterRole(role, el) {
         selectedRegisterRole = role;
         document.getElementById('role').value = role.toLowerCase();
         document.querySelectorAll('.role-switcher .role-option').forEach(btn => btn.classList.remove('active'));
         el.classList.add('active');
 
-        const title = document.getElementById('identitySectionTitle');
-        const hint = document.getElementById('accountTypeHint');
+        const title        = document.getElementById('identitySectionTitle');
+        const hint         = document.getElementById('accountTypeHint');
+        const subtitle     = document.getElementById('regSubtitle');
+        const kicker       = document.getElementById('regKicker');
+        const regTitle     = document.getElementById('regTitle');
+        const doctorFields = document.getElementById('doctorFields');
+        const panelTitle   = document.getElementById('panelTitle');
+        const panelDesc    = document.getElementById('panelDesc');
+
         if (role === 'DOCTOR') {
-            title.innerHTML = '<i class="fas fa-user-doctor"></i> Doctor Identity';
-            hint.textContent = 'You are creating a doctor account.';
+            if (title)       title.innerHTML      = '<i class="fas fa-user-doctor"></i> Doctor Identity';
+            if (hint)        hint.textContent     = 'You are creating a doctor account. Admin approval required before login.';
+            if (subtitle)    subtitle.textContent = 'Fill in your details and professional info. Admin approval is required before access.';
+            if (regTitle)    regTitle.textContent = 'Apply as a SmartHealth Doctor';
+            if (kicker)      kicker.innerHTML     = '<i class="fas fa-user-doctor"></i> Doctor Registration';
+            if (doctorFields) doctorFields.style.display = 'block';
+            if (panelTitle)  panelTitle.textContent = 'Join as a SmartHealth Doctor';
+            if (panelDesc)   panelDesc.textContent  = 'Register your credentials and specialization. An admin will review and approve your account before you can access the doctor dashboard.';
         } else {
-            title.innerHTML = '<i class="fas fa-user"></i> Patient Identity';
-            hint.textContent = 'You are creating a patient account.';
+            if (title)       title.innerHTML      = '<i class="fas fa-user"></i> Identity Details';
+            if (hint)        hint.textContent     = 'You are creating a patient account.';
+            if (subtitle)    subtitle.textContent = 'Fill in the mandatory details below to create your patient profile.';
+            if (regTitle)    regTitle.textContent = 'Open your SmartHealth account';
+            if (kicker)      kicker.innerHTML     = '<i class="fas fa-user-plus"></i> Register';
+            if (doctorFields) doctorFields.style.display = 'none';
+            if (panelTitle)  panelTitle.textContent = 'Create your patient account with complete intake details';
+            if (panelDesc)   panelDesc.textContent  = 'Share the core information hospitals usually need up front so appointments, records, and follow-up care can run more smoothly.';
         }
     }
 
     function togglePw(el) {
         const input = el.closest('.input-wrapper').querySelector('input');
-        const icon = el.querySelector('i');
+        const icon  = el.querySelector('i');
         if (input.type === 'password') {
             input.type = 'text';
             icon.className = 'fas fa-eye-slash';
@@ -211,6 +286,7 @@
 
     function showToast(msg, type) {
         const t = document.getElementById('toast');
+        if (!t) return;
         t.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check-circle' : 'exclamation-circle') + '"></i> ' + msg;
         t.className = 'toast ' + type;
         setTimeout(() => t.className = 'toast', 3500);
@@ -222,19 +298,30 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
         btn.disabled = true;
 
-        const name = document.getElementById('name').value.trim();
-        const dateOfBirth = document.getElementById('dob').value;
-        const gender = document.getElementById('gender').value;
-        const bloodGroup = document.getElementById('bloodGroup').value;
-        const email = document.getElementById('email').value.trim();
-        const phone = document.getElementById('phone').value.trim();
+        const name             = document.getElementById('name').value.trim();
+        const dateOfBirth      = document.getElementById('dob').value;
+        const gender           = document.getElementById('gender').value;
+        const bloodGroup       = document.getElementById('bloodGroup').value;
+        const email            = document.getElementById('email').value.trim();
+        const phone            = document.getElementById('phone').value.trim();
         const emergencyContact = document.getElementById('emergencyContact').value.trim();
-        const address = document.getElementById('address').value.trim();
-        const password = document.getElementById('password').value;
-        const role = document.getElementById('role').value || selectedRegisterRole.toLowerCase();
+        const address          = document.getElementById('address').value.trim();
+        const password         = document.getElementById('password').value;
+        const role             = (document.getElementById('role').value || selectedRegisterRole).toLowerCase();
+
+        const specialization = (document.getElementById('specialization') || {}).value || '';
+        const qualification  = ((document.getElementById('qualification')  || {}).value || '').trim();
+        const experience     = ((document.getElementById('experience')     || {}).value || '').trim();
 
         if (!name || !dateOfBirth || !gender || !bloodGroup || !email || !phone || !emergencyContact || !address || !password) {
-            showToast('Please fill in all mandatory hospital details.', 'error');
+            showToast('Please fill in all mandatory details.', 'error');
+            btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+            btn.disabled = false;
+            return;
+        }
+
+        if (role === 'doctor' && (!specialization || !qualification || !experience)) {
+            showToast('Please fill in all doctor professional details.', 'error');
             btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
             btn.disabled = false;
             return;
@@ -244,34 +331,65 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                name,
-                email,
-                password,
+                name, email, password,
                 role: role.toUpperCase(),
-                phone,
-                gender,
-                dateOfBirth,
-                bloodGroup,
-                address,
-                emergencyContact
+                phone, gender, dateOfBirth, bloodGroup, address, emergencyContact,
+                specialization, qualification, experience
             })
         })
         .then(res => {
-            if (!res.ok) throw new Error('Registration failed. Please try again.');
-            return res.text();
+            if (!res.ok) return res.json().then(e => { throw new Error(e.error || 'Registration failed.'); });
+            return res.json();
         })
         .then(() => {
             ['token', 'userId', 'name', 'email', 'role'].forEach(key => localStorage.removeItem(key));
-            showToast('Account created. Redirecting...', 'success');
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 1200);
+            if (role === 'doctor') {
+                showDoctorPendingNotice();
+            } else {
+                showToast('Account created! Redirecting to login...', 'success');
+                setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+            }
         })
         .catch(err => {
             showToast(err.message, 'error');
             btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
             btn.disabled = false;
         });
+    }
+
+    function showDoctorPendingNotice() {
+        const form = document.getElementById('registerForm');
+        if (form) form.style.display = 'none';
+        document.querySelectorAll('.helper-panel, .switch-auth').forEach(el => el.style.display = 'none');
+
+        const notice = document.createElement('div');
+        notice.style.cssText = 'text-align:center;padding:40px 20px;';
+        notice.innerHTML = `
+            <div style="width:80px;height:80px;border-radius:50%;background:rgba(245,158,11,0.12);
+                        display:flex;align-items:center;justify-content:center;margin:0 auto 24px;
+                        font-size:2.2rem;color:#f59e0b;border:2px solid rgba(245,158,11,0.3);">
+                <i class="fas fa-hourglass-half"></i>
+            </div>
+            <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:12px;">Application Submitted!</h2>
+            <p style="color:#6b7280;line-height:1.75;max-width:420px;margin:0 auto 24px;font-size:0.95rem;">
+                Your doctor registration has been received. An <strong>administrator</strong> will review and approve your account. You'll be able to login once approved.
+            </p>
+            <div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:14px;padding:14px 18px;
+                        margin:0 auto 28px;max-width:380px;text-align:left;display:flex;gap:10px;align-items:flex-start;">
+                <i class="fas fa-info-circle" style="color:#d97706;margin-top:3px;flex-shrink:0;"></i>
+                <span style="color:#92400e;font-size:0.87rem;line-height:1.65;">
+                    Try logging in after some time. The system will show a clear status if your account is still under review.
+                </span>
+            </div>
+            <a href="login.html" style="display:inline-flex;align-items:center;gap:8px;
+                                        background:linear-gradient(135deg,#1e8cfa,#0a6dd5);
+                                        color:#fff;text-decoration:none;padding:13px 32px;
+                                        border-radius:14px;font-weight:700;font-size:0.95rem;
+                                        box-shadow:0 8px 24px rgba(30,140,250,0.3);">
+                <i class="fas fa-sign-in-alt"></i> Go to Login
+            </a>
+        `;
+        document.querySelector('.auth-form-panel').appendChild(notice);
     }
 </script>
 

@@ -19,7 +19,9 @@
         <nav class="nav-menu">
             <span class="nav-label">Overview</span>
             <a href="#" class="nav-link active" data-admin-nav="overview"><i class="fas fa-chart-pie"></i><span>Overview</span></a>
-            <a href="#" class="nav-link" data-admin-nav="doctors"><i class="fas fa-user-md"></i><span>Manage Doctors</span></a>
+            <a href="#" class="nav-link" data-admin-nav="doctors"><i class="fas fa-user-md"></i><span>Manage Doctors</span>
+                <span class="nav-badge" id="pendingDoctorsBadge" style="display:none;">0</span>
+            </a>
             <a href="#" class="nav-link" data-admin-nav="patients"><i class="fas fa-procedures"></i><span>Manage Patients</span></a>
             <a href="#" class="nav-link" data-admin-nav="appointments"><i class="fas fa-calendar-check"></i><span>Appointments</span></a>
             <span class="nav-label">System</span>
@@ -142,7 +144,7 @@
                     <div class="page-header">
                         <div>
                             <h1>Manage Doctors</h1>
-                            <p>Review all doctor accounts, contact details, and profile information in one place.</p>
+                            <p>Approve pending registrations, add, edit, or remove doctor accounts.</p>
                         </div>
                     </div>
                     <div class="admin-toolbar-actions">
@@ -150,24 +152,57 @@
                             <i class="fas fa-search"></i>
                             <input type="text" id="doctorSearch" placeholder="Search doctors..." oninput="filterAdminTable('doctorsTableBody', this.value)">
                         </div>
+                        <button class="action-btn primary" type="button" onclick="openAddDoctorModal()"><i class="fas fa-plus"></i> Add Doctor</button>
                         <button class="action-btn primary" type="button" onclick="reloadAdminSection('doctors')"><i class="fas fa-rotate-right"></i> Refresh</button>
                     </div>
                 </div>
 
-                <div class="table-card">
+                <!-- Tabs -->
+                <div class="doctor-tabs">
+                    <button class="dtab active" id="tabActive" onclick="switchDoctorTab('active')"><i class="fas fa-circle-check"></i> Active Doctors</button>
+                    <button class="dtab" id="tabPending" onclick="switchDoctorTab('pending')">
+                        <i class="fas fa-hourglass-half"></i> Pending Approval
+                        <span class="dtab-count" id="pendingTabCount">0</span>
+                    </button>
+                </div>
+
+                <!-- Active doctors table -->
+                <div class="table-card" id="activeDoctorsPanel">
                     <div class="table-wrap">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Name</th>
+                                    <th>Name & Specialization</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Gender</th>
-                                    <th>Blood Group</th>
+                                    <th>Qualification</th>
+                                    <th>Exp.</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="doctorsTableBody">
-                                <tr><td colspan="5">Loading doctors...</td></tr>
+                                <tr><td colspan="6">Loading doctors...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pending doctors table -->
+                <div class="table-card" id="pendingDoctorsPanel" style="display:none;">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name & Specialization</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Qualification</th>
+                                    <th>Exp.</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingDoctorsTableBody">
+                                <tr><td colspan="6">Loading pending requests...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -372,6 +407,124 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- Doctor Add/Edit Modal -->
+<div id="doctorModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+    <div style="background:#0f1f38;border:1px solid rgba(30,140,250,0.25);border-radius:24px;padding:36px;width:92%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 40px 80px rgba(0,0,0,0.5);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+            <h2 id="modalTitle" style="font-size:1.25rem;font-weight:800;color:#f0f6ff;"><i class="fas fa-user-doctor" style="color:#1e8cfa;margin-right:8px;"></i> Add Doctor</h2>
+            <button onclick="closeDoctorModal()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#f0f6ff;width:34px;height:34px;cursor:pointer;font-size:1rem;">✕</button>
+        </div>
+        <form id="doctorModalForm" onsubmit="submitDoctorModal(event)">
+            <input type="hidden" id="modalDoctorId" value="">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                <div class="modal-field">
+                    <label>Full Name *</label>
+                    <input type="text" id="mName" placeholder="Dr. John Doe" required>
+                </div>
+                <div class="modal-field">
+                    <label>Email *</label>
+                    <input type="email" id="mEmail" placeholder="doctor@email.com" required>
+                </div>
+                <div class="modal-field">
+                    <label>Password <span style="color:rgba(240,246,255,0.5);font-size:0.78rem;">(leave blank to keep)</span></label>
+                    <input type="password" id="mPassword" placeholder="Set new password">
+                </div>
+                <div class="modal-field">
+                    <label>Phone *</label>
+                    <input type="tel" id="mPhone" placeholder="9876543210" required>
+                </div>
+                <div class="modal-field">
+                    <label>Gender</label>
+                    <select id="mGender">
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="modal-field">
+                    <label>Blood Group</label>
+                    <select id="mBloodGroup">
+                        <option value="">Select</option>
+                        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                        <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+                    </select>
+                </div>
+                <div class="modal-field">
+                    <label>Specialization *</label>
+                    <select id="mSpecialization" required>
+                        <option value="">Select specialization</option>
+                        <option>Cardiology</option><option>Neurology</option><option>Orthopedics</option>
+                        <option>Pediatrics</option><option>Dermatology</option><option>Oncology</option>
+                        <option>Ophthalmology</option><option>General Medicine</option><option>Psychiatry</option>
+                        <option>Gynecology</option><option>ENT</option><option>Radiology</option>
+                        <option>Urology</option><option>Gastroenterology</option><option>Pulmonology</option>
+                    </select>
+                </div>
+                <div class="modal-field">
+                    <label>Qualification *</label>
+                    <input type="text" id="mQualification" placeholder="MBBS, MD" required>
+                </div>
+                <div class="modal-field" style="grid-column:1/-1;">
+                    <label>Years of Experience *</label>
+                    <input type="number" id="mExperience" placeholder="e.g. 8" min="0" max="60" required>
+                </div>
+                <div class="modal-field" style="grid-column:1/-1;">
+                    <label>Address</label>
+                    <input type="text" id="mAddress" placeholder="Clinic / hospital address">
+                </div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:24px;">
+                <button type="submit" id="modalSubmitBtn" style="flex:1;background:linear-gradient(135deg,#1e8cfa,#0a6dd5);color:#fff;border:none;border-radius:14px;padding:13px;font-size:0.95rem;font-weight:700;cursor:pointer;">
+                    <i class="fas fa-save"></i> Save Doctor
+                </button>
+                <button type="button" onclick="closeDoctorModal()" style="padding:13px 24px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;color:#f0f6ff;cursor:pointer;font-weight:600;">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+/* Nav badge for pending count */
+.nav-badge {
+    display:inline-flex;align-items:center;justify-content:center;
+    background:#ef4444;color:#fff;border-radius:999px;
+    font-size:0.68rem;font-weight:800;padding:2px 7px;margin-left:6px;min-width:20px;
+}
+/* Doctor tabs */
+.doctor-tabs {
+    display:flex;gap:10px;margin-bottom:16px;
+}
+.dtab {
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 20px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.65);
+    font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;
+}
+.dtab.active {
+    background:rgba(30,140,250,0.18);border-color:rgba(30,140,250,0.4);color:#76d6ff;
+}
+.dtab-count {
+    background:#f59e0b;color:#fff;border-radius:999px;
+    font-size:0.7rem;font-weight:800;padding:2px 7px;min-width:20px;text-align:center;
+}
+/* Modal fields */
+.modal-field { display:flex;flex-direction:column;gap:6px; }
+.modal-field label { font-size:0.8rem;font-weight:600;color:rgba(240,246,255,0.65);letter-spacing:0.04em;text-transform:uppercase; }
+.modal-field input, .modal-field select {
+    background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+    border-radius:10px;padding:11px 14px;color:#f0f6ff;font-size:0.9rem;
+    transition:all 0.2s;outline:none;
+}
+.modal-field input:focus, .modal-field select:focus {
+    border-color:rgba(30,140,250,0.5);background:rgba(255,255,255,0.09);
+    box-shadow:0 0 0 3px rgba(30,140,250,0.12);
+}
+.modal-field select option { background:#0f1f38;color:#f0f6ff; }
+</style>
 
 <script src="../js/session-ui.js"></script>
 
