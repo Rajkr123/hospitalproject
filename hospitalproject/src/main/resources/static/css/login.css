@@ -67,9 +67,10 @@ body.admin-mode {
 
 .auth-image-panel {
     position: relative;
-    padding: 42px;
+    padding: 48px 42px 42px;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
+    justify-content: flex-start;
     min-height: 100%;
     color: var(--white);
     background-size: cover !important;
@@ -97,6 +98,24 @@ body.admin-mode .auth-image-panel::before {
     position: relative;
     z-index: 1;
     max-width: 360px;
+    margin-top: 0;
+}
+
+.optional-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(139,160,179,0.12);
+    color: var(--paper-400);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    margin-left: 6px;
+    vertical-align: middle;
+    border: 1px solid rgba(139,160,179,0.2);
 }
 
 .panel-badge {

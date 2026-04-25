@@ -1,343 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment | SmartHealth</title>
-    <link rel="stylesheet" href="/css/dashboard.css">
+    <title>Payment</title>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <style>
-        .payment-shell {
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            padding: 32px 18px;
-            background: linear-gradient(160deg, #eff6ff 0%, #dbeafe 42%, #f8fafc 100%);
-        }
-        .payment-card {
-            width: min(460px, 100%);
-            background: #ffffff;
-            border-radius: 18px;
-            padding: 28px;
-            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-        }
-        .payment-card h1 {
-            margin: 0 0 10px;
-            font-size: 1.8rem;
-            color: #0f172a;
-        }
-        .payment-card p {
-            color: #475569;
-            line-height: 1.6;
-        }
-        .payment-summary {
-            margin: 22px 0;
-            padding: 18px;
-            border-radius: 14px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-        }
-        .payment-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 10px;
-            color: #334155;
-        }
-        .payment-row:last-child {
-            margin-bottom: 0;
-            padding-top: 10px;
-            border-top: 1px solid #cbd5e1;
-            font-weight: 700;
-            color: #0f172a;
-        }
-        .pay-btn, .secondary-btn {
-            width: 100%;
-            padding: 12px 16px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            margin-top: 12px;
-        }
-        .pay-btn {
-            background: #2563eb;
-            color: #fff;
-        }
-        .pay-btn:disabled {
-            opacity: 0.7;
-            cursor: wait;
-        }
-        .secondary-btn {
-            background: #e2e8f0;
-            color: #0f172a;
-        }
-        .status-note {
-            margin-top: 14px;
-            font-size: 0.95rem;
-            color: #475569;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.48);
-            justify-content: center;
-            align-items: center;
-            padding: 18px;
-        }
-        .modal-content {
-            width: min(360px, 100%);
-            background: #fff;
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-        }
-        .modal-content h3 {
-            margin-top: 0;
-            color: #0f172a;
-        }
-    </style>
 </head>
+
 <body>
-<div class="payment-shell">
-    <div class="payment-card">
-        <h1>Complete Payment</h1>
-        <p>Finish the consultation payment for your latest booked appointment.</p>
 
-        <div class="payment-summary">
-            <div class="payment-row"><span>Appointment ID</span><strong id="appointmentIdText">Checking...</strong></div>
-            <div class="payment-row"><span>Consultation fee</span><strong>Rs. 647</strong></div>
-            <div class="payment-row"><span>Total payable</span><strong>Rs. 647</strong></div>
-        </div>
-
-        <button onclick="processPayment()" class="pay-btn" id="payBtn">Pay Rs. 647 Securely</button>
-        <button onclick="completeTestPayment()" class="secondary-btn" id="testPayBtn">Complete Payment (Test Fallback)</button>
-        <button onclick="window.location.href='/pages/appointment.html'" class="secondary-btn">Back to Appointment</button>
-        <div class="status-note" id="paymentStatus">We will verify the payment before generating your receipt. If Razorpay is blocked, use the test fallback button.</div>
-    </div>
-</div>
-
-<div id="successModal" class="modal">
-    <div class="modal-content">
-        <h3>Payment Successful!</h3>
-        <p>Your payment has been verified and the receipt is ready.</p>
-        <button onclick="goToDashboard()" class="pay-btn">Go to Dashboard</button>
-        <button onclick="downloadReceipt()" class="secondary-btn">Download Receipt</button>
-    </div>
-</div>
+<button onclick="payNow()">Pay ₹647</button>
 
 <script>
-    const API_BASE = "http://localhost:8083";
-    const PAYMENT_AMOUNT = 647;
+    async function payNow() {
 
-    let appointmentId = localStorage.getItem("lastBookedAppointmentId");
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
+        const appointmentId = localStorage.getItem("lastBookedAppointmentId");
 
-    function authHeaders() {
-        return token ? { "Authorization": "Bearer " + token } : {};
-    }
+        // ✅ Step 1: Get key
+        const configRes = await fetch("http://localhost:8083/api/payment/config");
+        const config = await configRes.json();
 
-    async function resolveAppointmentId() {
-        const appointmentText = document.getElementById("appointmentIdText");
-        const status = document.getElementById("paymentStatus");
-        const payBtn = document.getElementById("payBtn");
+        // ✅ Step 2: Create order
+        const orderRes = await fetch("http://localhost:8083/api/payment/create-order?amount=647", {
+            method: "POST"
+        });
 
-        if (appointmentId) {
-            appointmentText.textContent = appointmentId;
-            return;
-        }
+        const order = await orderRes.json();
 
-        if (!userId) {
-            appointmentText.textContent = "Not found";
-            status.textContent = "Please log in and book an appointment first.";
-            payBtn.disabled = true;
-            return;
-        }
+        var options = {
+            "key": config.key,
+            "amount": order.amount,
+            "currency": "INR",
+            "name": "Smart Health",
+            "description": "Appointment Payment",
+            "order_id": order.id,
 
-        try {
-            const res = await fetch(`${API_BASE}/api/payment/history/${userId}`, {
-                headers: authHeaders()
-            });
+            // ✅ SUCCESS
+            "handler": async function (response) {
 
-            if (!res.ok) {
-                throw new Error("Unable to load your appointment details.");
-            }
-
-            const appointments = await res.json();
-            const latestUnpaid = [...appointments]
-                .filter(item => (item.paymentStatus || "UNPAID") !== "PAID")
-                .sort((a, b) => new Date(b.createdAt || b.appointmentTime || 0) - new Date(a.createdAt || a.appointmentTime || 0))[0];
-
-            if (!latestUnpaid?.id) {
-                appointmentText.textContent = "Not found";
-                status.textContent = "No unpaid appointment was found. Please book an appointment first.";
-                payBtn.disabled = true;
-                return;
-            }
-
-            appointmentId = String(latestUnpaid.id);
-            localStorage.setItem("lastBookedAppointmentId", appointmentId);
-            appointmentText.textContent = appointmentId;
-            status.textContent = "Your latest unpaid appointment is ready for payment.";
-        } catch (err) {
-            console.error(err);
-            appointmentText.textContent = "Not found";
-            status.textContent = err.message || "Unable to load your appointment details.";
-            payBtn.disabled = true;
-        }
-    }
-
-    async function processPayment() {
-        const payBtn = document.getElementById("payBtn");
-        const status = document.getElementById("paymentStatus");
-
-        if (!appointmentId) {
-            alert("Appointment not found. Please book again.");
-            return;
-        }
-
-        payBtn.disabled = true;
-        payBtn.textContent = "Starting payment...";
-        status.textContent = "Preparing secure checkout...";
-
-        try {
-            const [configRes, orderRes] = await Promise.all([
-                fetch(API_BASE + "/api/payment/config", {
-                    headers: authHeaders()
-                }),
-                fetch(API_BASE + `/api/payment/create-order?amount=${PAYMENT_AMOUNT}`, {
+                await fetch("http://localhost:8083/api/payment/verify", {
                     method: "POST",
-                    headers: authHeaders()
-                })
-            ]);
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        ...response,
+                        appointmentId: appointmentId
+                    })
+                });
 
-            if (!configRes.ok || !orderRes.ok) {
-                let reason = "Unable to start payment right now.";
-                try {
-                    const errData = await orderRes.json();
-                    if (errData?.warning) reason = errData.warning;
-                } catch (_) {}
-                throw new Error(reason);
-            }
+                alert("✅ Payment Success");
+                window.location.href = "success.html";
+            },
 
-            const config = await configRes.json();
-            const order = await orderRes.json();
-
-            const options = {
-                key: config.key,
-                amount: order.amount,
-                currency: order.currency || "INR",
-                name: "SmartHealth",
-                description: "Appointment Payment",
-                handler: async function (response) {
-                    status.textContent = "Verifying payment...";
-                    const verifyRes = await fetch(API_BASE + "/api/payment/verify", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json", ...authHeaders() },
-                        body: JSON.stringify({
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature,
-                            appointmentId: appointmentId
-                        })
-                    });
-
-                    if (!verifyRes.ok) {
-                        throw new Error("Payment was captured but verification failed.");
-                    }
-
-                    status.textContent = "Payment verified successfully.";
-                    document.getElementById("successModal").style.display = "flex";
-                    payBtn.disabled = false;
-                    payBtn.textContent = "Pay Rs. 647 Securely";
-                },
-                modal: {
-                    ondismiss: function () {
-                        payBtn.disabled = false;
-                        payBtn.textContent = "Pay Rs. 647 Securely";
-                        status.textContent = "Payment was cancelled. You can try again.";
-                    }
+            // ❌ FAILURE
+            "modal": {
+                "ondismiss": function () {
+                    alert("❌ Payment Cancelled");
                 }
-            };
+            },
 
-            if (order?.id) {
-                options.order_id = order.id;
-            } else {
-                status.textContent = "Using direct checkout mode. Complete payment to continue.";
+            "prefill": {
+                "name": "Raj Kumar",
+                "email": "raj@gmail.com",
+                "contact": "9999999999"
+            },
+
+            "theme": {
+                "color": "#3399cc"
             }
+        };
 
-            const rzp = new Razorpay(options);
-            rzp.on("payment.failed", function () {
-                payBtn.disabled = false;
-                payBtn.textContent = "Pay Rs. 647 Securely";
-                status.textContent = "Razorpay failed or was blocked. You can try again or use Test Fallback.";
-                alert("Razorpay failed or was blocked by browser/network. Use 'Complete Payment (Test Fallback)'.");
-            });
-            rzp.open();
-        } catch (err) {
-            console.error(err);
-            payBtn.disabled = false;
-            payBtn.textContent = "Pay Rs. 647 Securely";
-            status.textContent = (err.message || "Payment could not be started.") + " You can use Test Fallback.";
-            alert((err.message || "Payment could not be started.") + " Use 'Complete Payment (Test Fallback)'.");
-        }
+        var rzp = new Razorpay(options);
+
+        rzp.on("payment.failed", function (response) {
+            alert("❌ Payment Failed");
+            console.log(response.error);
+        });
+
+        rzp.open();
     }
-
-    async function completeTestPayment() {
-        const status = document.getElementById("paymentStatus");
-        const testBtn = document.getElementById("testPayBtn");
-
-        if (!appointmentId) {
-            alert("Appointment not found. Please book again.");
-            return;
-        }
-
-        try {
-            testBtn.disabled = true;
-            testBtn.textContent = "Completing test payment...";
-            status.textContent = "Completing payment in test fallback mode...";
-
-            const verifyRes = await fetch(API_BASE + "/api/payment/verify", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", ...authHeaders() },
-                body: JSON.stringify({
-                    appointmentId: appointmentId,
-                    razorpay_payment_id: "TESTPAY_" + Date.now()
-                })
-            });
-
-            if (!verifyRes.ok) {
-                throw new Error("Test fallback payment failed.");
-            }
-
-            status.textContent = "Payment completed in test fallback mode.";
-            document.getElementById("successModal").style.display = "flex";
-        } catch (err) {
-            console.error(err);
-            status.textContent = err.message || "Test fallback payment failed.";
-            alert(err.message || "Test fallback payment failed.");
-        } finally {
-            testBtn.disabled = false;
-            testBtn.textContent = "Complete Payment (Test Fallback)";
-        }
-    }
-
-    function downloadReceipt() {
-        if (!appointmentId) {
-            alert("No paid appointment found for receipt download.");
-            return;
-        }
-        window.open(`${API_BASE}/api/payment/receipt/${appointmentId}`);
-    }
-
-    function goToDashboard() {
-        window.location.href = "/pages/patient-dashboard.html";
-    }
-
-    resolveAppointmentId();
 </script>
+
 </body>
 </html>

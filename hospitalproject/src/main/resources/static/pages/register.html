@@ -11,7 +11,7 @@
 <body>
 
 <div class="auth-container">
-    <div class="auth-image-panel" style="background: linear-gradient(160deg, #0f172a 0%, #0c4a6e 60%, #0a3d4d 100%), url('../images/modern_hospital_hero.png') center/cover;">
+    <div class="auth-image-panel" style="background: linear-gradient(160deg, #0f172a 0%, #0c4a6e 60%, #0a3d4d 100%), url('../images/modern_hospital_hero.png') center/cover; padding-top: 48px;">
         <div class="panel-content">
             <div class="panel-badge"><i class="fas fa-star"></i> Join SmartHealth</div>
             <h2 id="panelTitle">Create your patient account with complete intake details</h2>
@@ -38,11 +38,11 @@
             <!-- Role switcher -->
             <div class="role-switcher" aria-label="Account type" style="margin-bottom:18px;" id="roleSwitcher">
                 <button type="button" class="role-option active" data-role="PATIENT" onclick="selectRegisterRole('PATIENT', this)">
-                    <strong>Patient</strong>
+                    <strong><i class="fas fa-bed-pulse" style="margin-right:6px; color:#0ea5e9;"></i> Patient</strong>
                     <span>Appointments and records</span>
                 </button>
                 <button type="button" class="role-option" data-role="DOCTOR" id="doctorRoleBtn" onclick="selectRegisterRole('DOCTOR', this)">
-                    <strong>Doctor</strong>
+                    <strong><i class="fas fa-user-doctor" style="margin-right:6px; color:#f59e0b;"></i> Doctor</strong>
                     <span>Clinical dashboard access</span>
                 </button>
             </div>
@@ -126,10 +126,10 @@
 
                 <div class="input-row">
                     <div class="input-group">
-                        <label for="emergencyContact">Emergency Contact</label>
+                        <label for="emergencyContact">Emergency Contact <span class="optional-badge"><i class="fas fa-circle-info" style="font-size:0.65rem;"></i> Optional</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-phone-volume"></i>
-                            <input type="tel" id="emergencyContact" placeholder="9876543211" required pattern="[0-9]{10}" inputmode="numeric">
+                            <input type="tel" id="emergencyContact" placeholder="Emergency phone number" pattern="[0-9]{10}" inputmode="numeric">
                         </div>
                     </div>
                     <div class="input-group">
@@ -153,7 +153,7 @@
                 <!-- ── DOCTOR-ONLY FIELDS ── -->
                 <div id="doctorFields" style="display:none;">
                     <div class="form-section">
-                        <div class="form-section-title"><i class="fas fa-stethoscope"></i> Doctor Professional Details</div>
+                        <div class="form-section-title"><i class="fas fa-stethoscope"></i> Professional Details</div>
                     </div>
                     <div class="input-row">
                         <div class="input-group">
@@ -188,11 +188,20 @@
                             </div>
                         </div>
                     </div>
-                    <div class="input-group">
-                        <label for="experience">Years of Experience <span style="color:#e53e3e">*</span></label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-briefcase-medical"></i>
-                            <input type="number" id="experience" placeholder="e.g. 5" min="0" max="60">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="experience">Years of Experience <span style="color:#e53e3e">*</span></label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-briefcase-medical"></i>
+                                <input type="number" id="experience" placeholder="e.g. 5" min="0" max="60">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="doctorEmergencyContact">Emergency Contact <span class="optional-badge"><i class="fas fa-circle-info" style="font-size:0.65rem;"></i> Optional</span></label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-phone-volume"></i>
+                                <input type="tel" id="doctorEmergencyContact" placeholder="Emergency phone number" pattern="[0-9]{10}" inputmode="numeric">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -312,8 +321,9 @@
         const specialization = (document.getElementById('specialization') || {}).value || '';
         const qualification  = ((document.getElementById('qualification')  || {}).value || '').trim();
         const experience     = ((document.getElementById('experience')     || {}).value || '').trim();
+        const doctorEmergencyContact = ((document.getElementById('doctorEmergencyContact') || {}).value || '').trim();
 
-        if (!name || !dateOfBirth || !gender || !bloodGroup || !email || !phone || !emergencyContact || !address || !password) {
+        if (!name || !dateOfBirth || !gender || !bloodGroup || !email || !phone || !address || !password) {
             showToast('Please fill in all mandatory details.', 'error');
             btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
             btn.disabled = false;
@@ -333,7 +343,8 @@
             body: JSON.stringify({
                 name, email, password,
                 role: role.toUpperCase(),
-                phone, gender, dateOfBirth, bloodGroup, address, emergencyContact,
+                phone, gender, dateOfBirth, bloodGroup, address,
+                emergencyContact: emergencyContact || doctorEmergencyContact || null,
                 specialization, qualification, experience
             })
         })

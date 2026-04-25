@@ -26,10 +26,10 @@ import java.util.Map;
 @CrossOrigin("*")
 public class PaymentController {
 
-    @Value("${razorpay.key}")
+    @Value("${razorpay.key.id}")
     private String key;
 
-    @Value("${razorpay.secret}")
+    @Value("${razorpay.key.secret}")
     private String secret;
 
     @Autowired
@@ -62,8 +62,7 @@ public class PaymentController {
             response.put("currency", order.get("currency"));
         } catch (Exception ex) {
             // Keep checkout usable in direct mode when backend cannot create Razorpay order.
-            response.put("fallback", true);
-            response.put("warning", "Unable to create Razorpay order. Continuing in direct checkout mode.");
+            throw new RuntimeException("Order creation failed");
         }
 
         return response;

@@ -1,5 +1,5 @@
 const API_BASE = "http://localhost:8083";
-const PAYMENT_AMOUNT = 647;
+let PAYMENT_AMOUNT = 0;
 const token = localStorage.getItem("token");
 
 function authHeaders() {
